@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy System</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+<body>
+    <div class="background-blobs"></div>
+    <div class="blob-extra"></div>
+    
+    <header>
+        <div class="logo">LEGACY SYSTEM</div>
+        <nav>
+            <a href="/">Início</a>
+            <a class="separador_nav">|</a>
+            <a href="#sobre">Sobre nós</a>
+            <a class="separador_nav">|</a>
+            <a href="#contato">Contato</a>
+            <a class="separador_nav">|</a>
+            <a href="#faq">FAQ</a>
+            <a href="/admin" class="btn-login">Login</a>
+        </nav>
+    </header>
+    
+    <div class="hero">
+        <h1>Transforme a gestão da sua empresa com o Legacy System</h1>
+        <p>Centralize o controle de clientes, fornecedores, produtos e funcionários em uma plataforma intuitiva, segura e eficiente. Simplifique processos e potencialize seus resultados.</p>
+        <a href="/admin" class="btn-dashboard">
+            Acessar a dashboard
+            <img src="{% static '/icons/Group.png' %}" alt="Dashboard Icon">
+        </a>
+    </div>
+    
+    <script src="{% static '/js/script.js' %}"></script>
+</body>
+</html>

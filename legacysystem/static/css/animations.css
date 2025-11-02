@@ -1,0 +1,111 @@
+/* animacoes de movimento e escala para as bolas */
+
+@keyframes float1 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+
+@keyframes float2 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-40px, 40px) scale(1.15);
+    }
+}
+
+@keyframes float3 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(-25px, -25px) scale(0.95);
+    }
+    66% {
+        transform: translate(25px, 25px) scale(1.05);
+    }
+}
+
+@keyframes float4 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(35px, -35px) scale(1.1);
+    }
+}
+
+@keyframes float5 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(20px, 30px) scale(1.08);
+    }
+    75% {
+        transform: translate(-30px, -20px) scale(0.92);
+    }
+}
+
+/* animacoes de fade/opacidade para as bolas */
+
+@keyframes fadeBlob1 {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes fadeBlob2 {
+    0%, 100% {
+        opacity: 1;
+    }
+    35% {
+        opacity: 0.3;
+    }
+    70% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeBlob3 {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeBlob4 {
+    0%, 100% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.3;
+    }
+    75% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes fadeBlob5 {
+    0%, 100% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0.3;
+    }
+    80% {
+        opacity: 1;
+    }
+}
