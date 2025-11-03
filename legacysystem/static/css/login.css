@@ -1,0 +1,192 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-box {
+    width: 570px;
+    max-width: 90%;
+    height: auto;
+    min-height: 557px;
+    background: transparent;
+    backdrop-filter: blur(70px);
+    border-radius: 51.8px;
+    border: 0.78px solid rgba(222, 56, 60, 0.1);
+    padding: 50px 40px 120px 40px;
+    box-shadow: 
+        0px 23.31px 51.8px 0px rgba(0, 0, 0, 0.1),
+        0px 95.84px 95.84px 0px rgba(0, 0, 0, 0.09),
+        0px 214.98px 129.51px 0px rgba(0, 0, 0, 0.05),
+        0px 380.75px 152.82px 0px rgba(0, 0, 0, 0.01),
+        0px 595.74px 165.77px 0px rgba(0, 0, 0, 0);
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    z-index: 10;
+    opacity: 1;
+}
+
+.btn-back-top {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 100;
+}
+
+.btn-back-top:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-3px);
+}
+
+.logo-login {
+    font-size: 40px;
+    font-weight: 300;
+    background: white;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-box h2 {
+    font-size: 32px;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.subtitle {
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    background: transparent;
+    display: block;
+    margin-bottom: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input {
+    color: white;
+    width: 100%;
+    background: transparent;
+    padding: 14px 18px;
+    border: 2px solid rgba(99, 99, 99, 0.05);
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent;
+}
+
+.form-group input:focus {
+    outline: none;
+    background: transparent;
+    border-color: rgba(102, 12, 12, 1);
+    box-shadow: 0 0 0 4px rgba(99, 99, 99, 0.05);
+}
+
+.btn-login-submit {
+    position: absolute;
+    bottom: 70px;
+    left: 40px;
+    right: 40px;
+    width: calc(100% - 80px);
+    padding: 16px;
+    background: rgba(102, 12, 12, 1);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login-submit:hover {
+    color: white;
+    background: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 12, 12, 1);
+}
+
+.btn-login-submit:active {
+    color: white;
+    transform: translateY(0);
+    background: transparent;
+
+}
+
+.login-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.back-link {
+    color: rgba(102, 12, 12, 1);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: rgba(102, 12, 12, 1);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .login-box {
+        padding: 40px 30px;
+    }
+    
+    .login-box h2 {
+        font-size: 28px;
+    }
+}

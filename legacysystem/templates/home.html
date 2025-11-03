@@ -21,14 +21,30 @@
             <a href="#contato">Contato</a>
             <a class="separador_nav">|</a>
             <a href="#faq">FAQ</a>
-            <a href="/admin" class="btn-login">Login</a>
+            
+            <!-- if logado - botoes de perfil e sair-->
+            {% if user.is_authenticated %}
+                <div class="user-actions">
+                    <a href="#perfil" class="btn-icon" title="Perfil">
+                        <img src="{% static '/icons/user_icon.svg' %}" alt="Perfil">
+                    </a>
+                    <a href="{% url 'logout' %}" class="btn-icon" title="Sair">
+                        <img src="{% static '/icons/sair_icon.svg' %}" alt="Sair">
+                    </a>
+                </div>
+            <!-- else - botao de login -->
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">Login</a>
+            {% endif %}
         </nav>
     </header>
     
     <div class="hero">
         <h1>Transforme a gestão da sua empresa com o Legacy System</h1>
         <p>Centralize o controle de clientes, fornecedores, produtos e funcionários em uma plataforma intuitiva, segura e eficiente. Simplifique processos e potencialize seus resultados.</p>
-        <a href="/admin" class="btn-dashboard">
+        
+        <!-- ajustar para se logado mandar para o dashboard depois -->
+        <a href="{% url 'login' %}" class="btn-dashboard">
             Acessar a dashboard
             <img src="{% static '/icons/Group.png' %}" alt="Dashboard Icon">
         </a>
