@@ -25,9 +25,10 @@ body::before {
     border-radius: 50%;
     top: -20%;
     right: 15%;
-    filter: blur(150px);
+    filter: blur(60px);
     z-index: 0;
     pointer-events: none;
+    will-change: transform, opacity;
     animation: float1 20s ease-in-out infinite, fadeBlob1 12s ease-in-out infinite;
 }
 
@@ -40,9 +41,10 @@ body::after {
     border-radius: 50%;
     bottom: 10%;
     left: 10%;
-    filter: blur(200px);
+    filter: blur(60px);
     z-index: 0;
     pointer-events: none;
+    will-change: transform, opacity;
     animation: float2 25s ease-in-out infinite, fadeBlob2 15s ease-in-out infinite;
 }
 
@@ -65,9 +67,10 @@ body::after {
     border-radius: 50%;
     bottom: 30%;
     left: -10%;
-    filter: blur(200px);
+    filter: blur(60px);
     z-index: 0;
     pointer-events: none;
+    will-change: transform, opacity;
     animation: float3 30s ease-in-out infinite, fadeBlob3 18s ease-in-out infinite;
 }
 
@@ -80,7 +83,8 @@ body::after {
     border-radius: 50%;
     bottom: -50%;
     right: -5%;
-    filter: blur(150px);
+    filter: blur(60px);
+    will-change: transform, opacity;
     animation: float4 22s ease-in-out infinite, fadeBlob4 14s ease-in-out infinite;
 }
 
@@ -103,7 +107,8 @@ body::after {
     border-radius: 50%;
     bottom: -20%;
     right: 10%;
-    filter: blur(170px);
+    filter: blur(60px);
+    will-change: transform, opacity;
     animation: float5 28s ease-in-out infinite, fadeBlob5 16s ease-in-out infinite;
 }
 
@@ -199,12 +204,8 @@ nav a:hover {
     color: white;
     text-decoration: none;
     transition: all 0.2s ease;
-    backdrop-filter: blur(150px);
-    filter: drop-shadow(0px 9px 20px rgba(0, 0, 0, 0.1))
-            drop-shadow(0px 37px 37px rgba(0, 0, 0, 0.09))
-            drop-shadow(0px 83px 50px rgba(0, 0, 0, 0.05))
-            drop-shadow(0px 147px 59px rgba(0, 0, 0, 0.01))
-            drop-shadow(0px 230px 64px rgba(0, 0, 0, 0));
+    backdrop-filter: blur(60px);
+    filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, .3));
 }
 
 .btn-icon:hover {
@@ -254,12 +255,8 @@ nav a:hover {
     border-radius: 20px;
     text-decoration: none;
     transition: all 0.3s ease;
-    backdrop-filter: blur(150px);
-    filter: drop-shadow(0px 9px 20px rgba(0, 0, 0, 0.1))
-            drop-shadow(0px 37px 37px rgba(0, 0, 0, 0.09))
-            drop-shadow(0px 83px 50px rgba(0, 0, 0, 0.05))
-            drop-shadow(0px 147px 59px rgba(0, 0, 0, 0.01))
-            drop-shadow(0px 230px 64px rgba(0, 0, 0, 0));
+    backdrop-filter: blur(60px);
+    filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, .3));
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
     font-style: normal;

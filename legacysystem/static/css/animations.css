@@ -1,60 +1,60 @@
-/* animacoes de movimento e escala para as bolas */
+/* animacoes de movimento e escala - otimizado com GPU acceleration (translate3d) */
 
 @keyframes float1 {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
     }
     33% {
-        transform: translate(30px, -30px) scale(1.1);
+        transform: translate3d(30px, -30px, 0) scale(1.1);
     }
     66% {
-        transform: translate(-20px, 20px) scale(0.9);
+        transform: translate3d(-20px, 20px, 0) scale(0.9);
     }
 }
 
 @keyframes float2 {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
     }
     50% {
-        transform: translate(-40px, 40px) scale(1.15);
+        transform: translate3d(-40px, 40px, 0) scale(1.15);
     }
 }
 
 @keyframes float3 {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
     }
     33% {
-        transform: translate(-25px, -25px) scale(0.95);
+        transform: translate3d(-25px, -25px, 0) scale(0.95);
     }
     66% {
-        transform: translate(25px, 25px) scale(1.05);
+        transform: translate3d(25px, 25px, 0) scale(1.05);
     }
 }
 
 @keyframes float4 {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
     }
     50% {
-        transform: translate(35px, -35px) scale(1.1);
+        transform: translate3d(35px, -35px, 0) scale(1.1);
     }
 }
 
 @keyframes float5 {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
     }
     25% {
-        transform: translate(20px, 30px) scale(1.08);
+        transform: translate3d(20px, 30px, 0) scale(1.08);
     }
     75% {
-        transform: translate(-30px, -20px) scale(0.92);
+        transform: translate3d(-30px, -20px, 0) scale(0.92);
     }
 }
 
-/* animacoes de fade/opacidade para as bolas */
+/* animacoes de fade */
 
 @keyframes fadeBlob1 {
     0%, 100% {
