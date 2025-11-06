@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -10,7 +11,7 @@ def home(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('dashboard')
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -24,13 +25,17 @@ def login_view(request):
             if user is not None:
                 auth_login(request, user)
                 messages.success(request, f'Bem-vindo, {user.username}!')
-                return redirect('home')
+                return redirect('dashboard')
             else:
                 messages.error(request, 'Email ou senha incorretos.')
         except User.DoesNotExist:
             messages.error(request, 'Email ou senha incorretos.')
     
     return render(request, 'login.html')
+
+@login_required(login_url='login')
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
 
 def logout_view(request):
     auth_logout(request)

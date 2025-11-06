@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Legacy System</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/dashboard.css' %}">
+</head>
+<body>
+    <div class="background-blobs"></div>
+    <div class="blob-extra"></div>
+    
+    <div class="container-dashboard">
+        <aside class="sidebar">
+            <a href="{% url 'home' %}" class="icone-home" title="Home">
+                <img src="{% static '/icons/home_icon.svg' %}" alt="Home">
+            </a>
+
+            <!-- barra de navegacao lateral -->
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="item-nav {% if request.resolver_match.url_name == 'dashboard' %}ativo{% endif %}" title="Dashboard">
+                    <img src="{% static '/icons/dashboard_icon_ativo.svg' %}" alt="Dashboard">
+                </a>
+                <a href="#clientes" class="item-nav {% if request.resolver_match.url_name == 'clientes' %}ativo{% endif %}" title="Clientes">
+                    <img src="{% static '/icons/clientes_icon_inativo.svg' %}" alt="Clientes">
+                </a>
+                <a href="#fornecedores" class="item-nav {% if request.resolver_match.url_name == 'fornecedores' %}ativo{% endif %}" title="Fornecedores">
+                    <img src="{% static '/icons/fornecedores_icon_inativo.svg' %}" alt="Fornecedores">
+                </a>
+                <a href="#produtos" class="item-nav {% if request.resolver_match.url_name == 'produtos' %}ativo{% endif %}" title="Produtos">
+                    <img src="{% static '/icons/produtos_icon_inativo.svg' %}" alt="Produtos">
+                </a>
+                <a href="#funcionarios" class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" title="Funcionários">
+                    <img src="{% static '/icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
+                </a>
+                <a href="#vendas" class="item-nav {% if request.resolver_match.url_name == 'vendas' %}ativo{% endif %}" title="Vendas">
+                    <img src="{% static '/icons/vendas_icon_inativo.svg' %}" alt="Vendas">
+                </a>
+            </nav>
+            
+            <div class="sidebar-foot">
+                <a href="#notificacoes" class="item-nav" title="Notificações">
+                    <img src="{% static '/icons/notificacao_icon.svg' %}" alt="Notificações">
+                </a>
+                <a href="#perfil" class="item-nav" title="Perfil">
+                    <img src="{% static '/icons/user_icon.svg' %}" alt="Perfil">
+                </a>
+                <a href="{% url 'logout' %}" class="item-nav" title="Sair">
+                    <img src="{% static '/icons/sair_icon.svg' %}" alt="Sair">
+                </a>
+            </div>
+        </aside>
+        
+        <main>
+            <!-- bem vindo  (puxando primeiro nome do usuario)-->
+            <h1 class="titulo-boas-vindas">Bem vindo, {{ user.first_name|default:user.username }}!</h1>
+            
+
+            <!-- info-card -->
+            <div class="grade-dashboard">
+                <div class="coluna-esquerda">
+                    <div class="cartao-info">
+                        <div class="cartao">
+                            <span class="rotulo-stat">Clientes ativos:</span>
+                            <span class="valor-stat">154</span>
+                        </div>
+                        <div class="cartao">
+                            <span class="rotulo-stat">Produtos em estoque:</span>
+                            <span class="valor-stat">342</span>
+                        </div>
+                        <div class="cartao">
+                            <span class="rotulo-stat">Vendas do mês:</span>
+                            <span class="valor-stat">R$ 18.230,00</span>
+                        </div>
+                        <div class="cartao">
+                            <span class="rotulo-stat">Fornecedores ativos:</span>
+                            <span class="valor-stat">12</span>
+                        </div>
+                        <div class="cartao">
+                            <span class="rotulo-stat">Funcionários ativos:</span>
+                            <span class="valor-stat">8</span>
+                        </div>
+                        <div class="cartao alerta">
+                            <span class="rotulo-stat">Produtos com estoque baixo:</span>
+                            <span class="valor-stat">5</span>
+                        </div>
+                    </div>
+                    
+
+                    <!-- ultimos registros -->
+                    <div class="registros-recentes">
+                        <h2 class="titulo-secao-registros">Últimos Registros</h2>
+                        <div class="divisoria-registros"></div>
+                        <div class="lista-registros">
+                            <div class="item-registro">
+                                <div class="info-registro">
+                                    <span class="titulo-registro">Cliente adicionado:</span>
+                                    <span class="id-registro">ID: 340560</span>
+                                </div>
+                                <span class="hora-registro">15:40</span>
+                            </div>
+                            <div class="item-registro">
+                                <div class="info-registro">
+                                    <span class="titulo-registro">Cliente alterado:</span>
+                                    <span class="id-registro">ID: 903485</span>
+                                </div>
+                                <span class="hora-registro">14:26</span>
+                            </div>
+                            <div class="item-registro">
+                                <div class="info-registro">
+                                    <span class="titulo-registro">Produto adicionado:</span>
+                                    <span class="id-registro">ID: 657289</span>
+                                </div>
+                                <span class="hora-registro">14:10</span>
+                            </div>
+                            <div class="item-registro">
+                                <div class="info-registro">
+                                    <span class="titulo-registro">Reposição de produto:</span>
+                                    <span class="id-registro">ID: 240198</span>
+                                </div>
+                                <span class="hora-registro">13:35</span>
+                            </div>
+                            <div class="item-registro">
+                                <div class="info-registro">
+                                    <span class="titulo-registro">Produto adicionado:</span>
+                                    <span class="id-registro">ID: 240198</span>
+                                </div>
+                                <span class="hora-registro">09:48</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="coluna-direita">
+                    <div class="cartoes-relatorio">
+
+                        <!-- relatorio de clientes -->
+                        <div class="cartao-relatorio verde">
+                            <div class="cabecalho-relatorio">
+                                <h2 class="titulo-relatorio">Relatório de clientes</h2>
+                                <span class="subtitulo-relatorio">48 novos clientes</span>
+                            </div>
+                            <div class="numero-relatorio-positivo">
+                                350
+                                <svg class="icone-seta cima" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- relatorio de vendar -->
+                        <div class="cartao-relatorio vermelho">
+                            <div class="cabecalho-relatorio">
+                                <h2 class="titulo-relatorio">Relatório de vendas:</h2>
+                            </div>
+                            <div class="numero-relatorio-negativo">
+                                500
+                                <svg class="icone-seta baixo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M7 7L17 17M17 17H7M17 17V7" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- grafico aqui depois -->
+                    <div class="cartao-grafico" style="height: 350px; display: flex; align-items: center; justify-content: center;">
+                        <p>Gráfico em construção '-'</p>
+                    </div>
+                    
+
+                    <!-- acoes rapidas -->
+                    <div class="cartoes-acao">
+                        <a href="#novo-cliente" class="cartao-acao">
+                            <span>Novo Cliente</span>
+                            <img src="{% static '/icons/seta_icon.svg' %}" alt="Ir" class="icone-seta-pequeno">
+                        </a>
+                        
+                        <a href="#novo-funcionario" class="cartao-acao">
+                            <span>Novo Funcionário</span>
+                            <img src="{% static '/icons/seta_icon.svg' %}" alt="Ir" class="icone-seta-pequeno">
+                        </a>
+                        
+                        <a href="#registrar-venda" class="cartao-acao">
+                            <span>Registrar venda</span>
+                            <img src="{% static '/icons/seta_icon.svg' %}" alt="Ir" class="icone-seta-pequeno">
+                        </a>
+                        
+                        <a href="#cadastrar-produto" class="cartao-acao">
+                            <span>Cadastrar produto</span>
+                            <img src="{% static '/icons/seta_icon.svg' %}" alt="Ir" class="icone-seta-pequeno">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="{% static '/js/script.js' %}"></script>
+</body>
+</html>
