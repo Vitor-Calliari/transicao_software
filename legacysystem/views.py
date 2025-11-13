@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 
 def home(request):
@@ -11,6 +12,9 @@ def home(request):
 
 def perfil_view(request):
     return render(request, 'perfil.html')
+
+def clientes_view(request):
+    return render(request, 'clientes.html')
 
 def login_view(request):
     if request.user.is_authenticated:

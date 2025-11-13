@@ -23,8 +23,8 @@
                 <a href="{% url 'dashboard' %}" class="item-nav {% if request.resolver_match.url_name == 'dashboard' %}ativo{% endif %}" title="Dashboard">
                     <img src="{% static '/icons/dashboard_icon_ativo.svg' %}" alt="Dashboard">
                 </a>
-                <a href="#clientes" class="item-nav {% if request.resolver_match.url_name == 'clientes' %}ativo{% endif %}" title="Clientes">
-                    <img src="{% static '/icons/clientes_icon_inativo.svg' %}" alt="Clientes">
+                <a href="{% url 'clientes' %}" class="item-nav {% if request.resolver_match.url_name == 'clientes' %}ativo{% endif %}" title="clientes">
+                    <img src="{% static '/icons/clientes_icon_inativo.svg' %}" alt="clientes">
                 </a>
                 <a href="#fornecedores" class="item-nav {% if request.resolver_match.url_name == 'fornecedores' %}ativo{% endif %}" title="Fornecedores">
                     <img src="{% static '/icons/fornecedores_icon_inativo.svg' %}" alt="Fornecedores">
