@@ -25,3 +25,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const addButton = document.querySelector(".addbotaocliente");
+    const modalOverlay = document.querySelector("#modalOverlay");
+    const fecharModalCancelar = document.querySelector("#fecharModalCancelar");
+
+    if (!addButton || !modalOverlay) {
+        console.error("Erro: elementos do modal não encontrados.");
+        return;
+    }
+
+    // ABRIR O MODAL
+    addButton.addEventListener("click", () => {
+        modalOverlay.style.display = "flex";
+    });
+
+    // FECHAR NO CANCELAR
+    fecharModalCancelar.addEventListener("click", () => {
+        modalOverlay.style.display = "none";
+    });
+
+    // FECHAR CLICANDO FORA DO MODAL
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.style.display = "none";
+        }
+    });
+
+});

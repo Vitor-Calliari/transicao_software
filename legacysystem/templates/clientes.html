@@ -8,16 +8,13 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
-
-
 </head>
 <body>
-    <!-- fundo animado -->
     <div class="background-blobs"></div>
     <div class="blob-extra"></div>
 
     <div class="container-dashboard">
-        <!-- navbar lateral -->
+
         <aside class="sidebar">
             <a href="{% url 'home' %}" class="icone-home" title="Home">
                 <img src="{% static '/icons/home_icon.svg' %}" alt="Home">
@@ -57,17 +54,18 @@
             </div>
         </aside>
 
-       
         <main class="clientes-main">
             <h1>Clientes</h1>
-                <div class="top-bar">
-                    <div class="search-container">
-                        <input type="text" placeholder="Pesquisar" class="search-input">
-                        <img src="{% static 'icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
-                    </div>
 
-                    <button class="addbotaocliente">Adicionar Cliente</button>
+            <div class="top-bar">
+                <div class="search-container">
+                    <input type="text" placeholder="Pesquisar" class="search-input">
+                    <img src="{% static 'icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
                 </div>
+
+                <button class="addbotaocliente">Adicionar Cliente</button>
+            </div>
+
             <div class="clientes-lista">
                 <div class="info-card">
                     <div class="info-item">
@@ -75,29 +73,68 @@
                         <span class="value-center">#340560</span>
                         <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
                     </div>
-
-                    <div class="info-item"> 
-                    <span class="label">Maria Oliveira</span>
-                    <span class="value-center">#340570</span>
-                    <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
-
+                    <div class="info-item">
+                        <span class="label">Maria Oliveira</span>
+                        <span class="value-center">#340570</span>
+                        <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
                     </div>
                     <div class="info-item">
-                    <span class="label">Carlos Pereira</span>
-                    <span class="value-center">#340580</span>
-                    <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
-
-
+                        <span class="label">Carlos Pereira</span>
+                        <span class="value-center">#340580</span>
+                        <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
                     </div>
                 </div>
             </div>
 
         </main>
+
+    </div> <!-- fecha container-dashboard -->
+
+
+    <div id="modalOverlay" class="overlay">
+        <div class="modal-content">
+
+            <h2>Novo cliente</h2>
+
+            <input type="text" class="span-half" placeholder="Nome completo">
+            <input type="email" class="span-half" placeholder="E-mail">
+
+            <input type="tel" class="span-2" placeholder="Celular">
+            <input type="tel" class="span-fixo" placeholder="Telefone fixo">
+            <input type="text" class="span-1" placeholder="COD">
+
+            <input type="text" class="span-2" placeholder="Endereço">
+            <input type="text" class="span-2" placeholder="CEP">
+            <input type="text" class="span-1" placeholder="Nº">
+            <input type="text" class="span-1" placeholder="UF">
+
+            <input type="text" class="span-2" placeholder="Bairro">
+            <input type="text" class="span-2" placeholder="Cidade">
+            <input type="text" class="span-2" placeholder="Complemento">
+
+            <input type="text" class="span-half" placeholder="RG">
+            <input type="text" class="span-half" placeholder="CPF">
+
+            <div class="sidebar-container">
+                <div class="camera-placeholder">
+                    <div class="camera-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 5h3.2L8.5 3H15.5L16.8 5H20c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2zm8 14c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-3.5-4.5h2v2h3v-2h2v-3h-2v-2h-3v2h-2v3z"/>
+                            <path d="M12 17c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z" opacity="0.5"/>
+                            <path d="M15 10V8H13V10H11V12H13V14H15V12H17V10H15Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <button id="salvarCliente">Salvar</button>
+                <button id="excluirCliente">Excluir</button>
+                <button id="fecharModalCancelar">Cancelar</button>
+            </div>
+
+        </div>
     </div>
 
-    <script src="{% static '/js/script.js' %}"></script>
-
-    
+    <script src="{% static 'js/script.js' %}"></script>
 
 </body>
 </html>
