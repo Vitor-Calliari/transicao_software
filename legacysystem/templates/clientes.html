@@ -68,21 +68,6 @@
 
             <div class="clientes-lista">
                 <div class="info-card">
-                    <div class="info-item">
-                        <span class="label">João Silva</span>
-                        <span class="value-center">#340560</span>
-                        <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Maria Oliveira</span>
-                        <span class="value-center">#340570</span>
-                        <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Carlos Pereira</span>
-                        <span class="value-center">#340580</span>
-                        <img src="{% static 'icons/editar_icon.svg' %}" alt="Editar" class="editar-icon">
-                    </div>
                 </div>
             </div>
 
@@ -96,24 +81,27 @@
 
             <h2>Novo cliente</h2>
 
-            <input type="text" class="span-half" placeholder="Nome completo">
-            <input type="email" class="span-half" placeholder="E-mail">
+            <input id="nome" type="text" class="span-half" placeholder="Nome completo">
+            <input id="email" type="email" class="span-half" placeholder="E-mail">
 
-            <input type="tel" class="span-2" placeholder="Celular">
-            <input type="tel" class="span-fixo" placeholder="Telefone fixo">
-            <input type="text" class="span-1" placeholder="COD">
+            <input id="celular" type="tel" class="span-2" placeholder="Celular">
+            <input id="fixo" type="tel" class="span-fixo" placeholder="Telefone fixo">
+            <input id="cod" type="text" class="span-1" placeholder="COD">
 
-            <input type="text" class="span-2" placeholder="Endereço">
-            <input type="text" class="span-2" placeholder="CEP">
-            <input type="text" class="span-1" placeholder="Nº">
-            <input type="text" class="span-1" placeholder="UF">
+            <input id="endereco" type="text" class="span-2" placeholder="Endereço">
+            <input id="cep" type="text" class="span-2" placeholder="CEP">
+            <input id="numero" type="text" class="span-1" placeholder="Nº">
+            <input id="uf" type="text" class="span-1" placeholder="UF">
 
-            <input type="text" class="span-2" placeholder="Bairro">
-            <input type="text" class="span-2" placeholder="Cidade">
-            <input type="text" class="span-2" placeholder="Complemento">
+            <input id="bairro" type="text" class="span-2" placeholder="Bairro">
+            <input id="cidade" type="text" class="span-2" placeholder="Cidade">
+            <input id="complemento" type="text" class="span-2" placeholder="Complemento">
 
-            <input type="text" class="span-half" placeholder="RG">
-            <input type="text" class="span-half" placeholder="CPF">
+            <input id="rg" type="text" class="span-half" placeholder="RG">
+            <input id="cpf" type="text" class="span-half" placeholder="CPF">
+
+            <input type="hidden" id="clienteID">
+
 
             <div class="sidebar-container">
                 <div class="camera-placeholder">
@@ -135,6 +123,6 @@
     </div>
 
     <script src="{% static 'js/script.js' %}"></script>
-
+    <script src="{% static 'js/clientes_crud_script.js' %}"></script>
 </body>
 </html>
