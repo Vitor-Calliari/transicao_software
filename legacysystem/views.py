@@ -19,6 +19,12 @@ def clientes_view(request):
 def fornecedores_view(request):
     return render(request, 'fornecedores.html')
 
+def produtos_view(request):
+    return render(request, 'produtos.html')
+    
+def vendas_view(request):
+    return render(request, 'vendas.html')
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')

@@ -29,13 +29,13 @@
                 <a href="{% url 'fornecedores' %}" class="item-nav {% if request.resolver_match.url_name == 'fornecedores' %}ativo{% endif %}" title="Fornecedores">
                     <img src="{% static '/icons/fornecedores_icon_inativo.svg' %}" alt="Fornecedores">
                 </a>
-                <a href="#produtos" class="item-nav {% if request.resolver_match.url_name == 'produtos' %}ativo{% endif %}" title="Produtos">
+                <a href="{% url 'produtos' %}" class="item-nav {% if request.resolver_match.url_name == 'produtos' %}ativo{% endif %}" title="Produtos">
                     <img src="{% static '/icons/produtos_icon_inativo.svg' %}" alt="Produtos">
                 </a>
                 <a href="#funcionarios" class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" title="Funcionários">
                     <img src="{% static '/icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
                 </a>
-                <a href="#vendas" class="item-nav {% if request.resolver_match.url_name == 'vendas' %}ativo{% endif %}" title="Vendas">
+                <a href="{% url 'vendas' %}" class="item-nav {% if request.resolver_match.url_name == 'vendas' %}ativo{% endif %}" title="Vendas">
                     <img src="{% static '/icons/vendas_icon_inativo.svg' %}" alt="Vendas">
                 </a>
             </nav>
