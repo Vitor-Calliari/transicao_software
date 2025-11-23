@@ -11,6 +11,11 @@ urlpatterns = [
     path("funcionarios/create/", views.funcionario_create),
     path("funcionarios/<int:pk>/", views.funcionario_update),
     path("funcionarios/<int:pk>/delete/", views.funcionario_delete),
+    
+    path("fornecedores/", views.fornecedores_list, name='fornecedor_list'),
+    path("fornecedores/create/", views.fornecedor_create, name='fornecedor_create'),
+    path("fornecedores/<int:pk>/", views.fornecedor_update, name='fornecedor_update'),
+    path("fornecedores/<int:pk>/delete/", views.fornecedor_delete, name='fornecedor_delete'),
 
 ]
 

@@ -1,219 +1,288 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    // ==============================
+    // CONFIGURAÇÕES E ELEMENTOS
+    // ==============================
+
     const campos = {
-        nomeFornecedor: document.querySelector("#nomeFornecedor"),
-        emailFornecedor: document.querySelector("#emailFornecedor"),
-        celularFornecedor: document.querySelector("#celularFornecedor"),
-        fixoFornecedor: document.querySelector("#fixoFornecedor"),
-        codFornecedor: document.querySelector("#codFornecedor"),
-        enderecoFornecedor: document.querySelector("#enderecoFornecedor"),
-        cepFornecedor: document.querySelector("#cepFornecedor"),
-        numeroFornecedor: document.querySelector("#numeroFornecedor"),
-        ufFornecedor: document.querySelector("#ufFornecedor"),
-        bairroFornecedor: document.querySelector("#bairroFornecedor"),
-        cidadeFornecedor: document.querySelector("#cidadeFornecedor"),
-        complementoFornecedor: document.querySelector("#complementoFornecedor"),
-        cnpjFornecedor: document.querySelector("#cnpjFornecedor"),
+        nome: document.querySelector("#nomeFornecedor"),
+        email: document.querySelector("#emailFornecedor"),
+        celular: document.querySelector("#celularFornecedor"),
+        fixo: document.querySelector("#fixoFornecedor"),
+        cod: document.querySelector("#codFornecedor"),
+        endereco: document.querySelector("#enderecoFornecedor"),
+        cep: document.querySelector("#cepFornecedor"),
+        numero: document.querySelector("#numeroFornecedor"),
+        uf: document.querySelector("#ufFornecedor"),
+        bairro: document.querySelector("#bairroFornecedor"),
+        cidade: document.querySelector("#cidadeFornecedor"),
+        complemento: document.querySelector("#complementoFornecedor"),
+        cnpj: document.querySelector("#cnpjFornecedor")
     };
 
     const addButton = document.querySelector(".addFornecedorButton");
     const modalOverlay = document.querySelector("#modalOverlay");
     const fecharModalCancelar = document.querySelector("#fecharModalCancelar");
-
     const salvarButton = document.querySelector("#salvarFornecedor");
     const excluirButton = document.querySelector("#excluirFornecedor");
     const listaFornecedores = document.querySelector(".info-card");
 
-    const inputNome = document.querySelector("#nomeFornecedor");
-    const inputCod = document.querySelector("#codFornecedor");
-
     let modoEdicao = false;
     let fornecedorEditandoID = null;
+    let fornecedores = []; // <- agora armazenamos a lista completa aqui
+    let paginaAtual = 1;
+    const itensPorPagina = 10;
 
-    // abrir o modal
-    addButton.addEventListener("click", () => {
-        modoEdicao = false;
-        fornecedorEditandoID = null;
-        limparInputs();
-        campos.codFornecedor.value = gerarCodAutomatico(); // gerar cod automático
-        modalOverlay.style.display = "flex";
-    });
+    const API_BASE = "/api/fornecedores/";
 
 
-    // fechar o modal
-    function fecharModal() {
-        modalOverlay.style.display = "none";
-        modoEdicao = false;
-        fornecedorEditandoID = null;
+    // ==============================
+    // FUNÇÕES DE SEGURANÇA / FETCH
+    // ==============================
 
-        document.querySelectorAll("#modalOverlay input").forEach(input => {
-            input.value = "";
+    function getCsrfToken() {
+        if (window.CSRF_TOKEN) return window.CSRF_TOKEN;
+        const m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : '';
+    }
+
+    function fetchJson(url, options = {}) {
+        const headers = options.headers || {};
+        headers["Content-Type"] = "application/json";
+
+        const csrf = getCsrfToken();
+        if (csrf) headers["X-CSRFToken"] = csrf;
+
+        options.headers = headers;
+
+        return fetch(url, options).then(resp => {
+            if (!resp.ok)
+                return resp.json().then(err => Promise.reject({ status: resp.status, body: err }));
+            return resp.json();
         });
     }
 
-    // Botão cancelar
-    if (fecharModalCancelar) {
-        fecharModalCancelar.addEventListener("click", fecharModal);
+
+    // ==============================
+    // PAGINAÇÃO
+    // ==============================
+
+    function exibirPagina(pagina) {
+        listaFornecedores.innerHTML = "";
+        paginaAtual = pagina;
+
+        const inicio = (pagina - 1) * itensPorPagina;
+        const fim = inicio + itensPorPagina;
+
+        const itensPagina = fornecedores.slice(inicio, fim);
+
+        itensPagina.forEach(f => adicionarFornecedorNaListaDOM(f));
+
+        criarBotoesPaginacao();
+    }
+
+    function criarBotoesPaginacao() {
+        let totalPaginas = Math.ceil(fornecedores.length / itensPorPagina);
+        let container = document.querySelector("#paginacao");
+
+        if (!container) {
+            container = document.createElement("div");
+            container.id = "paginacao";
+            container.style.textAlign = "center";
+            container.style.marginTop = "20px";
+            listaFornecedores.parentElement.appendChild(container);
+        }
+
+        container.innerHTML = "";
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            btn.classList.add("pagina-btn");
+            if (i === paginaAtual) btn.classList.add("ativa");
+
+            btn.addEventListener("click", () => exibirPagina(i));
+            container.appendChild(btn);
+        }
     }
 
 
-    // Salvar fornecedor
-    salvarButton.addEventListener("click", () => {
-        let codFornecedor = inputCod.value.trim();
-        const nomeFornecedor = inputNome.value.trim();
+    // ==============================
+    // CRUD - VISUAL
+    // ==============================
 
-        if (!nome) {
-            alert("Preencha o nome do fornecedor!");
-            return;
-        }
-
-        if (!codFornecedor) {
-            codFornecedor = gerarCodAutomatico();
-            campos.codFornecedor.value = codFornecedor;
-        }
-
-        if (modoEdicao) {
-            atualizarFornecedor(fornecedorEditandoID);
-        } else {
-            criarFornecedor(nomeFornecedor, codFornecedor);
-        }
-
-        fecharModal();
-    });
-
-    function criarFornecedor(nomeFornecedor, codFornecedor) {
-
-        const id = Date.now();
-
-        const dadosFornecedor = {
-            id,
-            nomeFornecedor: campos.nomeFornecedor.value.trim(),
-            emailFornecedor: campos.emailFornecedor.value.trim(),
-            celularFornecedor: campos.celularFornecedor.value.trim(),
-            fixoFornecedor: campos.fixoFornecedor.value.trim(),
-            codFornecedor: campos.codFornecedor.value.trim(),
-            endereco: campos.enderecoFornecedor.value.trim(),
-            enderecoFornecedor: campos.cepFornecedor.value.trim(),
-            numeroFornecedor: campos.numeroFornecedor.value.trim(),
-            ufFornecedor: campos.ufFornecedor.value.trim(),
-            bairroFornecedor: campos.bairroFornecedor.value.trim(),
-            cidadeFornecedor: campos.cidadeFornecedor.value.trim(),
-            complementoFornecedor: campos.complementoFornecedor.value.trim(),
-            cnpjFornecedor: campos.cnpjFornecedor.value.trim()
-        };
-
+    function adicionarFornecedorNaListaDOM(dadosFornecedor) {
         const item = document.createElement("div");
         item.classList.add("info-item");
-        item.setAttribute("data-id", id);
+        item.setAttribute("data-id", dadosFornecedor.id);
         item.dados = dadosFornecedor;
 
         item.innerHTML = `
-            <span class="label">${dadosFornecedor.nomeFornecedor}</span>
-            <span class="value-center">#${dadosFornecedor.codFornecedor}</span>
+            <span class="label">${dadosFornecedor.nome}</span>
+            <span class="value-center">#${dadosFornecedor.cod}</span>
             <img src="/static/icons/editar_icon.svg" class="editar-icon">
         `;
 
         item.querySelector(".editar-icon").addEventListener("click", () => {
-            abrirEdicao(id);
+            abrirEdicao(dadosFornecedor.id);
         });
 
         listaFornecedores.appendChild(item);
     }
 
-    function abrirEdicao(id) {
-        modoEdicao = true;
-        fornecedorEditandoID = id;
 
-        const item = document.querySelector(`[data-id="${id}"]`);
-        const dados = item.dados;
+    // ==============================
+    // CRUD - API
+    // ==============================
 
-        for (let campo in campos) {
-            campos[campo].value = dados[campo] ?? "";
-        }
-
-        modalOverlay.style.display = "flex";
+    function carregarFornecedores() {
+        fetch(API_BASE)
+            .then(res => res.json())
+            .then(data => {
+                fornecedores = data.fornecedores;
+                exibirPagina(1);
+            })
+            .catch(err => console.error("Erro ao carregar fornecedores", err));
     }
 
-    function atualizarFornecedor(id) {
-        const item = document.querySelector(`[data-id="${id}"]`);
-        const dados = item.dados;
+    function criarFornecedorAPI() {
+        const payload = coletarDadosDoFormulario();
 
-        for (let campo in campos) {
-            dados[campo] = campos[campo].value.trim();
-        }
+        fetchJson(API_BASE + "create/", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        }).then(data => {
+            fornecedores.push(data.fornecedor);
+            exibirPagina(paginaAtual);
+        });
+    }
 
-        item.querySelector(".label").innerText = dados.nomeFornecedor;
-        item.querySelector(".value-center").innerText = "#" + dados.codFornecedor;
+    function atualizarFornecedorAPI(id) {
+        const payload = coletarDadosDoFormulario();
+
+        fetchJson(API_BASE + id + "/", {
+            method: "PUT",
+            body: JSON.stringify(payload)
+        }).then(data => {
+
+            const index = fornecedores.findIndex(f => f.id === id);
+            if (index !== -1) fornecedores[index] = data.fornecedor;
+
+            exibirPagina(paginaAtual);
+        });
     }
 
     excluirButton.addEventListener("click", () => {
         if (!modoEdicao) return;
+        if (!confirm("Confirma exclusão?")) return;
 
-        const item = document.querySelector(`[data-id="${fornecedorEditandoID}"]`);
-        if (item) item.remove();
+        fetchJson(API_BASE + fornecedorEditandoID + "/delete/", {
+            method: "DELETE"
+        }).then(() => {
+            fornecedores = fornecedores.filter(f => f.id !== fornecedorEditandoID);
+            exibirPagina(1);
+            fecharModal();
+        });
+    });
+
+
+    // ==============================
+    // MODAL E FORMULÁRIO
+    // ==============================
+
+    addButton.addEventListener("click", () => {
+        modoEdicao = false;
+        fornecedorEditandoID = null;
+        limparInputs();
+        campos.cod.value = gerarCodAutomatico();
+        modalOverlay.style.display = "flex";
+    });
+
+    function abrirEdicao(id) {
+        modoEdicao = true;
+        fornecedorEditandoID = id;
+
+        const dados = fornecedores.find(f => f.id === id);
+
+        for (let campo in campos) campos[campo].value = dados[campo] ?? "";
+
+        modalOverlay.style.display = "flex";
+    }
+
+    salvarButton.addEventListener("click", () => {
+        const nome = campos.nome.value.trim();
+        if (!nome) return alert("Preencha o nome!");
+
+        if (modoEdicao) atualizarFornecedorAPI(fornecedorEditandoID);
+        else criarFornecedorAPI();
 
         fecharModal();
     });
 
-    // Gerar ID 
+    function fecharModal() {
+        modalOverlay.style.display = "none";
+        modoEdicao = false;
+        fornecedorEditandoID = null;
+    }
+
+    if (fecharModalCancelar) fecharModalCancelar.addEventListener("click", fecharModal);
+
+    function coletarDadosDoFormulario() {
+        return {
+            nome: campos.nome.value.trim(),
+            email: campos.email.value.trim(),
+            celular: campos.celular.value.trim(),
+            fixo: campos.fixo.value.trim(),
+            cod: Number(campos.cod.value.trim()) || null,
+            endereco: campos.endereco.value.trim(),
+            cep: campos.cep.value.trim(),
+            numero: campos.numero.value.trim(),
+            uf: campos.uf.value.trim(),
+            bairro: campos.bairro.value.trim(),
+            cidade: campos.cidade.value.trim(),
+            complemento: campos.complemento.value.trim(),
+            cnpj: campos.cnpj.value.trim(),
+        };
+    }
 
     function gerarCodAutomatico() {
-        const itens = document.querySelectorAll(".info-item");
-
-        if (itens.length === 0) return 1;
-
-        let maior = 0;
-
-        itens.forEach(item => {
-            const cod = parseInt(item.dados.cod);
-            if (!isNaN(cod) && cod > maior) maior = cod;
-        });
-
+        if (fornecedores.length === 0) return 1;
+        const maior = Math.max(...fornecedores.map(f => Number(f.cod) || 0));
         return maior + 1;
     }
 
-
     function limparInputs() {
-        for (let campo in campos) {
-            campos[campo].value = "";
-        }
+        for (let campo in campos) campos[campo].value = "";
     }
 
-});
+    carregarFornecedores();
 
-document.addEventListener("DOMContentLoaded", function () {
+
+    // ==============================
+    // MÁSCARAS DE CAMPOS
+    // ==============================
+
     document.getElementById("nomeFornecedor").addEventListener("input", function () {
         this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, "");
-    })
+    });
 
     document.getElementById("celularFornecedor").addEventListener("input", function () {
         let v = this.value.replace(/\D/g, "");
-
         if (v.length > 11) v = v.slice(0, 11);
 
-        if (v.length > 6) {
-            this.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
-        } else if (v.length > 2) {
-            this.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-        } else {
-            this.value = v;
-        }
+        if (v.length > 6) this.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+        else if (v.length > 2) this.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+        else this.value = v;
     });
 
     document.getElementById("fixoFornecedor").addEventListener("input", function () {
         let v = this.value.replace(/\D/g, "");
-
         if (v.length > 10) v = v.slice(0, 10);
 
-        if (v.length > 6) {
-            this.value = `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
-        } else if (v.length > 2) {
-            this.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-        } else {
-            this.value = v;
-        }
+        if (v.length > 6) this.value = `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
+        else if (v.length > 2) this.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+        else this.value = v;
     });
-
 
     document.getElementById("cnpjFornecedor").addEventListener("input", function () {
         let value = this.value.replace(/\D/g, "");
@@ -221,22 +290,14 @@ document.addEventListener("DOMContentLoaded", function () {
         value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
         value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
         value = value.replace(/(\d{4})(\d)/, "$1-$2");
-
         this.value = value.slice(0, 18);
     });
 
     document.getElementById("cepFornecedor").addEventListener("input", function () {
         let v = this.value.replace(/\D/g, "");
-
         if (v.length > 8) v = v.slice(0, 8);
-
-        if (v.length > 5) {
-            this.value = `${v.slice(0, 5)}-${v.slice(5)}`;
-        } else {
-            this.value = v;
-        }
+        this.value = v.length > 5 ? `${v.slice(0, 5)}-${v.slice(5)}` : v;
     });
-
 
     document.getElementById("numeroFornecedor").addEventListener("input", function () {
         this.value = this.value.replace(/\D/g, "");
@@ -246,9 +307,5 @@ document.addEventListener("DOMContentLoaded", function () {
         let value = this.value.replace(/[^A-Za-z]/g, "");
         this.value = value.toUpperCase().slice(0, 2);
     });
+
 });
-
-
-mascaraCelular(document.querySelector("#celularFornecedor"));
-mascaraFixo(document.querySelector("#fixoFornecedor"));
-mascaraUF(document.querySelector("#ufFornecedor"));

@@ -206,3 +206,78 @@ def funcionario_delete(request, pk):
 
     func.delete()
     return JsonResponse({"deleted": True})
+
+
+# -----------------------------
+# API PARA CRUD DE FORNECEDORES
+# -----------------------------
+from .models import Fornecedor
+from .forms import FornecedorForm
+
+def fornecedor_to_dict(forn):
+    return {
+        "id": forn.id,
+        "nome": forn.nome,
+        "email": forn.email,
+        "celular": forn.celular,
+        "fixo": forn.fixo,
+        "cod": forn.cod,
+        "endereco": forn.endereco,
+        "cep": forn.cep,
+        "numero": forn.numero,
+        "uf": forn.uf,
+        "bairro": forn.bairro,
+        "cidade": forn.cidade,
+        "complemento": forn.complemento,
+        "cnpj": forn.cnpj,
+        "created_at": forn.created_at.isoformat(),
+        "updated_at": forn.updated_at.isoformat(),
+    }
+
+
+@require_http_methods(["GET"])
+def fornecedores_list(request):
+    fornecedores = Fornecedor.objects.order_by("cod")
+    data = [fornecedor_to_dict(f) for f in fornecedores]
+    return JsonResponse({"fornecedores": data})
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def fornecedor_create(request):
+    data = json.loads(request.body.decode("utf-8"))
+    form = FornecedorForm(data)
+    if form.is_valid():
+        forn = form.save()
+        return JsonResponse({"fornecedor": fornecedor_to_dict(forn)}, status=201)
+    return JsonResponse({"errors": form.errors}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["PUT", "PATCH"])
+def fornecedor_update(request, pk):
+    try:
+        forn = Fornecedor.objects.get(pk=pk)
+    except Fornecedor.DoesNotExist:
+        return JsonResponse({"error": "Fornecedor not found"}, status=404)
+
+    data = json.loads(request.body.decode("utf-8"))
+    form = FornecedorForm(data, instance=forn)
+
+    if form.is_valid():
+        forn = form.save()
+        return JsonResponse({"fornecedor": fornecedor_to_dict(forn)})
+
+    return JsonResponse({"errors": form.errors}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def fornecedor_delete(request, pk):
+    try:
+        forn = Fornecedor.objects.get(pk=pk)
+    except Fornecedor.DoesNotExist:
+        return JsonResponse({"error": "Fornecedor not found"}, status=404)
+
+    forn.delete()
+    return JsonResponse({"deleted": True})
