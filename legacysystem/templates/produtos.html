@@ -4,20 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Perfil</title>
+    <title>Produtos - Legacy System</title>
     <link rel="stylesheet" href="{% static '/css/base.css' %}">
     <link rel="stylesheet" href="{% static '/css/dashboard.css' %}">
 </head>
 <body>
     {% include 'background.html' %}
-    
+
     <div class="container-dashboard">
         {% include 'sidebar.html' %}
-        
+
         <main>
-            <!-- bem vindo  (puxando primeiro nome do usuario)-->
-            <h1 class="titulo-boas-vindas">Bem vindo, {{ user.first_name|default:user.username }}!</h1>
-    
+            <h1>Produtos</h1>
+            <p>Página em construção...</p>
+        </main>
+    </div>
+
     <script src="{% static '/js/script.js' %}"></script>
 </body>
 </html>

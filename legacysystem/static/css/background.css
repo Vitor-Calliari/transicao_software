@@ -1,0 +1,96 @@
+/* Background animations and blobs */
+body::before {
+    content: '';
+    position: absolute;
+    width: 455px;
+    height: 455px;
+    background: radial-gradient(circle, rgba(139, 26, 26, 1) 0%, rgba(139, 26, 26, 1) 0%);
+    border-radius: 50%;
+    top: -20%;
+    right: 15%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: float1 20s ease-in-out infinite, fadeBlob1 12s ease-in-out infinite;
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    background: radial-gradient(circle, rgba(139, 26, 26, 1) 0%, rgba(139, 26, 26, 1) 0%);
+    border-radius: 50%;
+    bottom: 10%;
+    left: 10%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: float2 25s ease-in-out infinite, fadeBlob2 15s ease-in-out infinite;
+}
+
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.background-blobs::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 26, 26, 1) 0%, rgba(139, 26, 26, 1) 0%);
+    border-radius: 50%;
+    bottom: 30%;
+    left: -10%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: float3 30s ease-in-out infinite, fadeBlob3 18s ease-in-out infinite;
+}
+
+.background-blobs::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 1000px;
+    background: radial-gradient(circle, rgba(222, 56, 60, 0.8) 0%, rgba(222, 56, 60, 0.8) 0%);
+    border-radius: 50%;
+    bottom: -50%;
+    right: -5%;
+    filter: blur(60px);
+    will-change: transform, opacity;
+    animation: float4 22s ease-in-out infinite, fadeBlob4 14s ease-in-out infinite;
+}
+
+.blob-extra {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.blob-extra::before {
+    content: '';
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    background: radial-gradient(circle, rgba(139, 26, 26, 1) 0%, rgba(139, 26, 26, 1) 0%);
+    border-radius: 50%;
+    bottom: -20%;
+    right: 10%;
+    filter: blur(60px);
+    will-change: transform, opacity;
+    animation: float5 28s ease-in-out infinite, fadeBlob5 16s ease-in-out infinite;
+}

@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Legacy System</title>
-    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/base.css' %}">
     <link rel="stylesheet" href="{% static '/css/login.css' %}">
 </head>
 <body>
-    <div class="background-blobs"></div>
-    <div class="blob-extra"></div>
+    {% include 'background.html' %}
     
     <a href="{% url 'home' %}" class="btn-back-top">← Voltar</a>
     

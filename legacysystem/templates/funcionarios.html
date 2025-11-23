@@ -5,57 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Funcoinarios - Legacy System</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/funcionarios.css' %}">
 
 </head>
 <body>
-    <div class="background-blobs"></div>
-    <div class="blob-extra"></div>
+    {% include 'background.html' %}
 
     <div class="container-dashboard">
 
-        <aside class="sidebar">
-            <a href="{% url 'home' %}" class="icone-home" title="Home">
-                <img src="{% static '/icons/home_icon.svg' %}" alt="Home">
-            </a>
-
-            <nav class="sidebar-nav">
-                <a href="{% url 'dashboard' %}" class="item-nav {% if request.resolver_match.url_name == 'dashboard' %}ativo{% endif %}" title="Dashboard">
-                    <img src="{% static '/icons/dashboard_icon_ativo.svg' %}" alt="Dashboard">
-                </a>
-                <a href="{% url 'clientes' %}" class="item-nav {% if request.resolver_match.url_name == 'clientes' %}ativo{% endif %}" title="Clientes">
-                    <img src="{% static '/icons/clientes_icon_inativo.svg' %}" alt="Clientes">
-                </a>
-                <a href="{% url 'fornecedores' %}" class="item-nav {% if request.resolver_match.url_name == 'fornecedores' %}ativo{% endif %}" title="Fornecedores">
-                    <img src="{% static '/icons/fornecedores_icon_inativo.svg' %}" alt="Fornecedores">
-                </a>
-                <a href="#produtos" class="item-nav" title="Produtos">
-                    <img src="{% static '/icons/produtos_icon_inativo.svg' %}" alt="Produtos">
-                </a>
-                <a href="{% url 'funcionarios' %}" class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" title="Funcionários">
-                <img src="{% static 'icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
-                </a>
-
-                <a href="#vendas" class="item-nav" title="Vendas">
-                    <img src="{% static '/icons/vendas_icon_inativo.svg' %}" alt="Vendas">
-                </a>
-            </nav>
-
-            <div class="sidebar-foot">
-                <a href="#notificacoes" class="item-nav" title="Notificações">
-                    <img src="{% static '/icons/notificacao_icon.svg' %}" alt="Notificações">
-                </a>
-                <a href="{% url 'perfil' %}" class="item-nav" title="Perfil">
-                    <img src="{% static '/icons/user_icon.svg' %}" alt="Perfil">
-                </a>
-                <a href="{% url 'logout' %}" class="item-nav" title="Sair">
-                    <img src="{% static '/icons/sair_icon.svg' %}" alt="Sair">
-                </a>
-
-            </div>
-        </aside>
+        {% include 'sidebar.html' %}
 
         <main class="funcionarios-main">
             <h1>Funcionarios</h1>

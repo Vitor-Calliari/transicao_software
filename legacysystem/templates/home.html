@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legacy System</title>
+    <link rel="stylesheet" href="{% static '/css/base.css' %}">
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
 <body>
-    <div class="background-blobs"></div>
-    <div class="blob-extra"></div>
+    {% include 'background.html' %}
     
     <header>
         <div class="logo">LEGACY SYSTEM</div>

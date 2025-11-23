@@ -54,6 +54,14 @@ def fornecedores_view(request):
 def funcionarios_view(request):
     return render(request, 'funcionarios.html')
 
+@login_required(login_url='login')
+def produtos_view(request):
+    return render(request, 'produtos.html')
+
+@login_required(login_url='login')
+def vendas_view(request):
+    return render(request, 'vendas.html')
+
 # -----------------------------
 # API PARA CRUD DE CLIENTES
 # -----------------------------
