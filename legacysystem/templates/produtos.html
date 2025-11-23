@@ -4,22 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos - Legacy System</title>
-    <link rel="stylesheet" href="{% static '/css/base.css' %}">
+    <title>Dashboard - Produtos</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
     <link rel="stylesheet" href="{% static '/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static '/css/produtos.css' %}">
 </head>
 <body>
-    {% include 'background.html' %}
-
+    <div class="background-blobs"></div>
+    <div class="blob-extra"></div>
+    
     <div class="container-dashboard">
-        {% include 'sidebar.html' %}
+        <aside class="sidebar">
+            <a href="{% url 'home' %}" class="icone-home" title="Home">
+                <img src="{% static '/icons/home_icon.svg' %}" alt="Home">
+            </a>
 
-        <main>
+            <!-- barra de navegacao lateral -->
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="item-nav {% if request.resolver_match.url_name == 'dashboard' %}ativo{% endif %}" title="Dashboard">
+                    <img src="{% static '/icons/dashboard_icon_ativo.svg' %}" alt="Dashboard">
+                </a>
+                <a href="{% url 'clientes' %}" class="item-nav {% if request.resolver_match.url_name == 'clientes' %}ativo{% endif %}" title="clientes">
+                    <img src="{% static '/icons/clientes_icon_inativo.svg' %}" alt="clientes">
+                </a>
+                <a href="#fornecedores" class="item-nav {% if request.resolver_match.url_name == 'fornecedores' %}ativo{% endif %}" title="Fornecedores">
+                    <img src="{% static '/icons/fornecedores_icon_inativo.svg' %}" alt="Fornecedores">
+                </a>
+                <a href="#produtos" class="item-nav {% if request.resolver_match.url_name == 'produtos' %}ativo{% endif %}" title="Produtos">
+                    <img src="{% static '/icons/produtos_icon_inativo.svg' %}" alt="Produtos">
+                </a>
+                <a href="#funcionarios" class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" title="Funcionários">
+                    <img src="{% static '/icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
+                </a>
+                <a href="#vendas" class="item-nav {% if request.resolver_match.url_name == 'vendas' %}ativo{% endif %}" title="Vendas">
+                    <img src="{% static '/icons/vendas_icon_inativo.svg' %}" alt="Vendas">
+                </a>
+            </nav>
+            
+            <div class="sidebar-foot">
+                <a href="#notificacoes" class="item-nav" title="Notificações">
+                    <img src="{% static '/icons/notificacao_icon.svg' %}" alt="Notificações">
+                </a>
+                <a href="{% url 'perfil' %}" class="item-nav" title="Perfil">
+                    <img src="{% static '/icons/user_icon.svg' %}" alt="Perfil">
+                </a>
+                <a href="{% url 'logout' %}" class="item-nav" title="Sair">
+                    <img src="{% static '/icons/sair_icon.svg' %}" alt="Sair">
+                </a>
+            </div>
+        </aside>
+        
+        <main class="produtos-main">
             <h1>Produtos</h1>
-            <p>Página em construção...</p>
+
+            <div class="top-bar">
+                <div class="search-container">
+                    <input type="text" placeholder="Pesquisar" class="search-input">
+                    <img src="{% static '/icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
+                </div>
+
+                <button type="button" class="addbotaoproduto">Adicionar Produto</button>
+            </div>
+
+            <div class="produtos-lista">
+                <table class="produtos-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Código</th>
+                            <th>Estoque atual</th>
+                            <th>Valor unitário</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="produtosTbody">
+                        <!-- linhas geradas via JS -->
+                    </tbody>
+                </table>
+            </div>
+
         </main>
+
+    </div> <!-- fecha container-dashboard -->
+
+
+    <div id="modalOverlayProduto" class="overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalProdutoTitle">
+        <div class="modal-content">
+
+            <h2 id="modalProdutoTitle">Novo produto</h2>
+
+            <div id="produtoError" class="modal-error" role="alert" aria-hidden="true">
+                <strong class="modal-error-title">ATENÇÃO!</strong>
+                <p id="produtoErrorMessage" class="modal-error-message"></p>
+            </div>
+
+            <!-- Primeira linha: Descrição (sp3), Quantidade (sp1), Valor unitário (sp1) -->
+            <div class="field span-3">
+                <label for="produtoDescricao">Descrição</label>
+                <input id="produtoDescricao" type="text" placeholder="Descrição">
+            </div>
+
+            <div class="field span-1">
+                <label for="produtoQtd">Quantidade</label>
+                <input id="produtoQtd" type="text" placeholder="Quantidade">
+            </div>
+
+            <div class="field span-1">
+                <label for="produtoValorUnitario">Valor unitário</label>
+                <input id="produtoValorUnitario" type="text" placeholder="Valor unitário">
+            </div>
+
+            <!-- Segunda linha: Estoque atual, CÓD, Salvar, Cancelar, Excluir -->
+            <div class="field span-1">
+                <label for="produtoEstoque">Estoque atual</label>
+                <input id="produtoEstoque" type="text" placeholder="Estoque atual">
+            </div>
+
+            <div class="field span-1">
+                <label for="produtoCod">CÓD</label>
+                <input id="produtoCod" type="text" placeholder="CÓD">
+            </div>
+
+            <div class="actions-row span-1">
+                <button id="salvarProduto" type="button">Salvar</button>
+            </div>
+
+            <div class="actions-row span-1">
+                <button id="fecharModalProdutoCancelar" type="button">Cancelar</button>
+            </div>
+
+            <div class="actions-row span-1">
+                <button id="excluirProduto" type="button">Excluir</button>
+            </div>
+
+            <input type="hidden" id="produtoID">
+        </div>
     </div>
 
     <script src="{% static '/js/script.js' %}"></script>
+    <script src="{% static '/js/produtos_crud_script.js' %}"></script>
 </body>
 </html>
