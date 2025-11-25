@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import exportar_clientes_csv
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -12,4 +13,5 @@ urlpatterns = [
     path('funcionarios/', views.funcionarios_view, name='funcionarios'),
     path('produtos/', views.produtos_view, name='produtos'),
     path('vendas/', views.vendas_view, name='vendas'),
+    path('exportar_clientes_csv/', exportar_clientes_csv, name='exportar_clientes_csv'),
 ]

@@ -32,11 +32,12 @@ main {
 
 
 .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* mantém tudo no mesmo eixo */
-    gap: 15px; /* espaço entre busca e botão */
+    display: flex !important;           /* Garante que é flex */
+    justify-content: space-between !important; /* Empurra um grupo pra esq e outro pra dir */
+    align-items: center;                /* Alinha tudo verticalmente no meio */
+    width: 100%;                        /* Ocupa a largura total */
     margin-bottom: 25px;
+    flex-wrap: nowrap;                  /* Impede que os itens caiam pra linha de baixo */
 }
 
 /* Container da busca */
@@ -74,6 +75,8 @@ main {
 
 /* === BOTÃO "Adicionar Cliente" === */
 .addbotaocliente {
+  white-space: nowrap; /* Impede que o texto do botão quebre linha */
+  margin: 0;
   width: 202px;
   height: 38px;
   background: rgba(39, 200, 64, 0.05);
@@ -331,8 +334,51 @@ main {
     .sidebar-container {
         width: 100%;
     }
-    .camera-placeholder {
+    .camera-placAeholder {
         width: 150px; 
         margin: 0 auto;
     }
+}
+
+.toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* O gap que estava antes na top-bar vem pra cá */
+}
+
+/* Grupo da Direita (Texto Filtro + Impressora) */
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Texto "Últimos 3 meses" */
+.filter-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #888; /* Cinza discreto */
+    cursor: pointer;
+}
+.filter-text:hover {
+    color: #ccc;
+}
+
+/* Botão da Impressora */
+.btn-print {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa; /* Cor inicial do ícone */
+    transition: all 0.2s ease;
+}
+
+.btn-print:hover {
+    background: rgba(255, 255, 255, 0.1); /* Fundo clarinho ao passar mouse */
+    color: #fff; /* Ícone fica branco */
 }

@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const salvarButton = document.querySelector("#salvarCliente");
     const excluirButton = document.querySelector("#excluirCliente");
     const listaClientes = document.querySelector(".info-card");
+    const btnPrint = document.querySelector('.btn-print');
 
     const inputNome = campos.nome;
     const inputCod = campos.cod;
@@ -237,4 +238,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // por fim, carrega os clientes do backend
     carregarClientes();
 
-}); // DOMContentLoaded
+
+if (btnPrint) {
+    btnPrint.addEventListener('click', function() {
+        const exportUrl = this.getAttribute('data-export-url');
+
+        if (exportUrl) {
+            window.location.href = "/exportar_clientes_csv/";
+        } else {
+            console.error("URL de exportação não encontrada no botão.");
+        }
+    });
+}
+
+}); 

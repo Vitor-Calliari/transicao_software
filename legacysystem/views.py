@@ -3,6 +3,10 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+import csv
+from django.http import HttpResponse
+from .models import Cliente 
+
 
 # -----------------------------
 # VIEWS HTML (SITE)
@@ -291,6 +295,22 @@ def fornecedor_delete(request, pk):
     return JsonResponse({"deleted": True})
 
 
+def exportar_clientes_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="clientes.csv"'
+
+    # **** MUDANÇA CRÍTICA: Definir o delimitador como ponto e vírgula (;) ****
+    writer = csv.writer(response, delimiter=';') 
+    
+    # Cabeçalho
+    writer.writerow(['ID', 'Nome', 'Email', 'Telefone'])
+
+    # Dados
+    for cliente in Cliente.objects.all():
+        # Certifique-se de que a ordem dos campos bate com o cabeçalho
+        writer.writerow([cliente.id, cliente.nome, cliente.email, cliente.celular]) 
+        
+    return response
 # API PRODUTOS
 from .models import Produto
 from .forms import ProdutoForm

@@ -55,4 +55,26 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
         ),
+    
+        migrations.CreateModel(
+            name='Fornecedor',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nome', models.CharField(max_length=200)),
+                ('email', models.EmailField(blank=True, max_length=254, null=True)),
+                ('celular', models.CharField(blank=True, max_length=20, null=True)),
+                ('fixo', models.CharField(blank=True, max_length=20, null=True)),
+                ('cod', models.PositiveIntegerField(unique=True)),
+                ('endereco', models.CharField(blank=True, max_length=255, null=True)),
+                ('cep', models.CharField(blank=True, max_length=20, null=True)),
+                ('numero', models.CharField(blank=True, max_length=20, null=True)),
+                ('uf', models.CharField(blank=True, max_length=5, null=True)),
+                ('bairro', models.CharField(blank=True, max_length=100, null=True)),
+                ('cidade', models.CharField(blank=True, max_length=100, null=True)),
+                ('complemento', models.CharField(blank=True, max_length=100, null=True)),
+                ('cnpj', models.CharField(blank=True, max_length=30, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+            ],
+        ),
     ]
