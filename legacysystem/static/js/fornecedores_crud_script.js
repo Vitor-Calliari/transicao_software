@@ -308,4 +308,39 @@ document.addEventListener("DOMContentLoaded", () => {
         this.value = value.toUpperCase().slice(0, 2);
     });
 
+    // ==============================
+    // BUSCA DE FORNECEDORES
+    // ==============================
+
+    document.getElementById("searchFornecedor").addEventListener("input", function () {
+        const termo = this.value.trim().toLowerCase();
+
+        if (termo === "") {
+            exibirPagina(1); // Volta ao modo normal com paginação
+            return;
+        }
+
+        const filtrados = fornecedores.filter(f =>
+            (f.nome ?? "").toLowerCase().includes(termo) ||
+            (String(f.cod) ?? "").includes(termo) ||
+            (f.cnpj ?? "").toLowerCase().includes(termo)
+        );
+
+        exibirResultadosBusca(filtrados);
+    });
+
+    function exibirResultadosBusca(lista) {
+        listaFornecedores.innerHTML = "";
+
+        if (lista.length === 0) {
+            listaFornecedores.innerHTML =
+                "<p style='color:white; text-align:center;'>Nenhum fornecedor encontrado.</p>";
+        } else {
+            lista.forEach(f => adicionarFornecedorNaListaDOM(f));
+        }
+
+        const pag = document.querySelector("#paginacao");
+        if (pag) pag.innerHTML = ""; // Esconde paginação durante busca
+    }
+
 });
