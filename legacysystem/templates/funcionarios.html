@@ -40,33 +40,40 @@
 
 
     <div id="modalOverlay">
-        <div class="modal-content">
+    <div class="modal-content">
 
-            <h2>Novo funcionario</h2>
+        <h2>Novo funcionario</h2>
 
-            <input id="nome" type="text" class="span-half" placeholder="Nome completo">
-            <input id="email" type="email" class="span-half" placeholder="E-mail">
+        <input id="nome" type="text" class="span-half" placeholder="Nome completo">
+        <input id="email" type="email" class="span-half" placeholder="E-mail">
 
-            <input id="celular" type="tel" class="span-2" placeholder="Celular">
-            <input id="fixo" type="tel" class="span-fixo" placeholder="Telefone fixo">
-            <input id="cod" type="text" class="span-1" placeholder="COD">
+        <input id="celular" type="tel" class="span-2" placeholder="Celular">
+        <input id="fixo" type="tel" class="span-fixo" placeholder="Telefone fixo">
+        <input id="cod" type="text" class="span-1" placeholder="COD"> <input id="endereco" type="text" class="span-2" placeholder="Endereço">
+        <input id="cep" type="text" class="span-2" placeholder="CEP">
+        <input id="numero" type="text" class="span-1" placeholder="Nº">
+        <input id="uf" type="text" class="span-1" placeholder="UF">
 
-            <input id="endereco" type="text" class="span-2" placeholder="Endereço">
-            <input id="cep" type="text" class="span-2" placeholder="CEP">
-            <input id="numero" type="text" class="span-1" placeholder="Nº">
-            <input id="uf" type="text" class="span-1" placeholder="UF">
+        <input id="bairro" type="text" class="span-2" placeholder="Bairro">
+        <input id="cidade" type="text" class="span-2" placeholder="Cidade">
+        <input id="complemento" type="text" class="span-2" placeholder="Complemento">
 
-            <input id="bairro" type="text" class="span-2" placeholder="Bairro">
-            <input id="cidade" type="text" class="span-2" placeholder="Cidade">
-            <input id="complemento" type="text" class="span-2" placeholder="Complemento">
+        <input id="rg" type="text" class="span-half" placeholder="RG">
+        <input id="cpf" type="text" class="span-half" placeholder="CPF">
 
-            <input id="rg" type="text" class="span-half" placeholder="RG">
-            <input id="cpf" type="text" class="span-half" placeholder="CPF">
+        <input type="hidden" id="funcionarioID">
 
-            <input type="hidden" id="funcionarioID">
+        <input id="senha" type="password" class="span-2" placeholder="Senha">
+        <input id="cargo" type="text" class="span-2" placeholder="Cargo">
 
-
-            <div class="sidebar-container">
+        <div style="grid-column: span 2;">
+    <select id="nivel_acesso" required style="width:100%; height:55px; padding:0 40px 0 20px; background:#1E1E1E; border:1px solid #333; border-radius:12px; color:#E0E0E0; font-family:'Poppins',sans-serif; font-size:14px; outline:none; -webkit-appearance:none; appearance:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%23666' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 18px center;">
+        <option value="" disabled selected>Nível de acesso</option>
+        <option value="administrador">Administrador</option>
+        <option value="funcionario">Funcionário</option>
+    </select>
+    </div>
+        <div class="sidebar-container">
                 <div class="camera-placeholder">
                     <div class="camera-icon">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -77,13 +84,13 @@
                     </div>
                 </div>
 
-                <button id="salvarFuncionario">Salvar</button>
-                <button id="excluirFuncionario">Excluir</button>
-                <button id="fecharModalCancelar">Cancelar</button>
-            </div>
-
+            <button id="salvarFuncionario">Salvar</button>
+            <button id="excluirFuncionario">Excluir</button>
+            <button id="fecharModalCancelar">Cancelar</button>
         </div>
+
     </div>
+</div>
     
     <script src="{% static 'js/script.js' %}"></script>
     <script src="{% static 'js/funcionario_crud_script.js' %}"></script>

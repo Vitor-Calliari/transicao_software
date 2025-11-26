@@ -29,7 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
     complemento: document.getElementById("complemento"),
     rg: document.getElementById("rg"),
     cpf: document.getElementById("cpf"),
-    id: document.getElementById("funcionarioID")
+    id: document.getElementById("funcionarioID"),
+    senha: document.getElementById("senha"),
+    cargo: document.getElementById("cargo"),
+    nivel_acesso: document.getElementById("nivel_acesso")
   };
 
   let modoEdicao = false;
@@ -133,6 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
     campos.complemento.value = func.complemento || "";
     campos.rg.value = func.rg || "";
     campos.cpf.value = func.cpf || "";
+    campos.senha.value = func.senha || "";
+    campos.cargo.value = func.cargo || "";
+    campos.nivel_acesso.value = func.nivel_acesso || "";
   }
 
   function abrirEdicao(id) {
@@ -171,22 +177,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Coletar dados (com fixo)
   function coletarDadosDoFormulario() {
     return {
-      nome: campos.nome.value.trim(),
-      email: campos.email.value.trim(),
-      celular: campos.celular.value.trim(),
-      fixo: campos.fixo.value.trim(),
-      cod: campos.cod.value.trim() ? Number(campos.cod.value.trim()) : null,
-      endereco: campos.endereco.value.trim(),
-      cep: campos.cep.value.trim(),
-      numero: campos.numero.value.trim(),
-      uf: campos.uf.value.trim(),
-      bairro: campos.bairro.value.trim(),
-      cidade: campos.cidade.value.trim(),
-      complemento: campos.complemento.value.trim(),
-      rg: campos.rg.value.trim(),
-      cpf: campos.cpf.value.trim(),
+        nome: campos.nome.value.trim(),
+        email: campos.email.value.trim(),
+        celular: campos.celular.value.trim(),
+        fixo: campos.fixo.value.trim(),
+        cod: campos.cod.value.trim() ? Number(campos.cod.value.trim()) : gerarCodAutomatico(),
+        endereco: campos.endereco.value.trim(),
+        cep: campos.cep.value.trim(),
+        numero: campos.numero.value.trim(),
+        uf: campos.uf.value.trim(),
+        bairro: campos.bairro.value.trim(),
+        cidade: campos.cidade.value.trim(),
+        complemento: campos.complemento.value.trim(),
+        rg: campos.rg.value.trim(),
+        cpf: campos.cpf.value.trim(),
+        senha: campos.senha.value,
+        cargo: campos.cargo.value.trim(),
+        nivel_acesso: campos.nivel_acesso.value || null  // string mesmo, não número
     };
-  }
+}
 
   // CRUD
   function criarFuncionarioAPI() {

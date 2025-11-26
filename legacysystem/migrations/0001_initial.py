@@ -75,18 +75,9 @@ class Migration(migrations.Migration):
                 ('cpf', models.CharField(blank=True, max_length=20, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Produto',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('descricao', models.CharField(max_length=255)),
-                ('cod', models.CharField(max_length=50, unique=True)),
-                ('valorUnitario', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('estoque', models.PositiveIntegerField(default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('senha', models.CharField(blank=True, max_length=128, null=True)),
+                ('cargo', models.CharField(blank=True, max_length=100, null=True)),
+                ('nivel_acesso', models.IntegerField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
