@@ -7,6 +7,7 @@
     <title>Dashboard - Legacy System</title>
     <link rel="stylesheet" href="{% static '/css/base.css' %}">
     <link rel="stylesheet" href="{% static '/css/dashboard.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     {% include 'background.html' %}
@@ -102,7 +103,7 @@
                     
                     <!-- grafico aqui depois -->
                     <div class="cartao-grafico" style="height: 350px; display: flex; align-items: center; justify-content: center;">
-                        <p>Gráfico em construção '-'</p>
+                        <canvas id="salesChart" width="400" height="200"></canvas>
                     </div>
                     
 
@@ -134,5 +135,11 @@
     </div>
     
     <script src="{% static '/js/script.js' %}"></script>
+    <script>
+        window.monthsData = {{ months_json|safe }};
+        window.salesData = {{ sales_data_json|safe }};
+        window.currentYear = {{ current_year }};
+    </script>
+    <script src="{% static '/js/dashboard.js' %}"></script>
 </body>
 </html>

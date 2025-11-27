@@ -45,17 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // filtrar
     function filtrarClientes(termo) {
-        if (!termo.trim()) {
-            clientesDropdown.style.display = 'none';
-            return;
-        }
-
         const termoLower = termo.toLowerCase();
-        const clientesFiltrados = todosClientes.filter(c => 
-            c.nome.toLowerCase().includes(termoLower) ||
-            (c.cpf && c.cpf.includes(termo)) ||
-            (c.email && c.email.toLowerCase().includes(termoLower))
-        );
+        let clientesFiltrados;
+
+        if (termo.trim()) {
+            clientesFiltrados = todosClientes.filter(c => 
+                c.nome.toLowerCase().includes(termoLower) ||
+                (c.cpf && c.cpf.includes(termo)) ||
+                (c.email && c.email.toLowerCase().includes(termoLower))
+            );
+        } else {
+            clientesFiltrados = todosClientes.slice(); // mostrar todos
+        }
 
         if (clientesFiltrados.length > 0) {
             clientesDropdown.innerHTML = clientesFiltrados.map(c => `
@@ -64,9 +65,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="dropdown-item-info">${c.cpf || 'CPF não cadastrado'} - ${c.email || 'Email não cadastrado'}</div>
                 </div>
             `).join('');
+            const rect = clienteSearchInput.getBoundingClientRect();
+            clientesDropdown.style.position = 'fixed';
+            clientesDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+            clientesDropdown.style.left = (rect.left + window.scrollX) + 'px';
+            clientesDropdown.style.width = rect.width + 'px';
+            clientesDropdown.style.zIndex = '1300';
             clientesDropdown.style.display = 'block';
         } else {
             clientesDropdown.innerHTML = '<div class="dropdown-item-empty">Nenhum cliente encontrado</div>';
+            const rect = clienteSearchInput.getBoundingClientRect();
+            clientesDropdown.style.position = 'fixed';
+            clientesDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+            clientesDropdown.style.left = (rect.left + window.scrollX) + 'px';
+            clientesDropdown.style.width = rect.width + 'px';
+            clientesDropdown.style.zIndex = '1300';
             clientesDropdown.style.display = 'block';
         }
     }
@@ -96,9 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         clienteSearchInput.addEventListener('focus', () => {
-            if (clienteSearchInput.value.trim()) {
-                filtrarClientes(clienteSearchInput.value);
-            }
+            filtrarClientes(clienteSearchInput.value);
         });
     }
 
@@ -135,16 +146,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function filtrarProdutos(termo) {
-        if (!termo.trim()) {
-            produtosDropdown.style.display = 'none';
-            return;
-        }
-
         const termoLower = termo.toLowerCase();
-        const produtosFiltrados = todosProdutos.filter(p => 
-            p.descricao.toLowerCase().includes(termoLower) ||
-            p.cod.toLowerCase().includes(termoLower)
-        );
+        let produtosFiltrados;
+
+        if (termo.trim()) {
+            produtosFiltrados = todosProdutos.filter(p => 
+                p.descricao.toLowerCase().includes(termoLower) ||
+                p.cod.toLowerCase().includes(termoLower)
+            );
+        } else {
+            produtosFiltrados = todosProdutos.slice(); // mostrar todos
+        }
 
         if (produtosFiltrados.length > 0) {
             produtosDropdown.innerHTML = produtosFiltrados.map(p => `
@@ -153,9 +165,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="dropdown-item-info">Cód: ${p.cod} - ${currencyFormatter.format(p.valorUnitario)} - Estoque: ${p.estoque}</div>
                 </div>
             `).join('');
+            const rect = produtoSearchInput.getBoundingClientRect();
+            produtosDropdown.style.position = 'fixed';
+            produtosDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+            produtosDropdown.style.left = (rect.left + window.scrollX) + 'px';
+            produtosDropdown.style.width = rect.width + 'px';
+            produtosDropdown.style.zIndex = '1300';
             produtosDropdown.style.display = 'block';
         } else {
             produtosDropdown.innerHTML = '<div class="dropdown-item-empty">Nenhum produto encontrado</div>';
+            const rect = produtoSearchInput.getBoundingClientRect();
+            produtosDropdown.style.position = 'fixed';
+            produtosDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+            produtosDropdown.style.left = (rect.left + window.scrollX) + 'px';
+            produtosDropdown.style.width = rect.width + 'px';
+            produtosDropdown.style.zIndex = '1300';
             produtosDropdown.style.display = 'block';
         }
     }
@@ -178,9 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         produtoSearchInput.addEventListener('focus', () => {
-            if (produtoSearchInput.value.trim()) {
-                filtrarProdutos(produtoSearchInput.value);
-            }
+            filtrarProdutos(produtoSearchInput.value);
         });
     }
 

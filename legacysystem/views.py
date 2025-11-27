@@ -8,8 +8,10 @@ from django.db.models import Sum, F
 from django.utils import timezone
 from django.http import HttpResponse
 import csv 
-from .models import Cliente, Produto, Venda, Funcionario, Fornecedor
 
+from .models import Cliente, Produto, Venda, Funcionario, Fornecedor
+from django.db.models.functions import ExtractMonth
+import json 
 
 
 # -----------------------------
@@ -50,6 +52,13 @@ def dashboard_view(request):
     now = timezone.now()
     current_year = now.year
     current_month = now.month
+    
+    # gafico dashboard
+    sales_by_month = Venda.objects.filter(data_venda__year=current_year).annotate(month=ExtractMonth('data_venda')).values('month').annotate(total=Sum('valor_final')).order_by('month')
+    months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+    sales_data = [0] * 12
+    for sale in sales_by_month:
+        sales_data[sale['month'] - 1] = float(sale['total'])
     
     # Mês anterior
     last_month = current_month - 1
@@ -143,6 +152,9 @@ def dashboard_view(request):
         'vendas_status': vendas_status,
         'vendas_seta': vendas_seta,
         'ultimos_registros': ultimos_registros,
+        'sales_data_json': json.dumps(sales_data),
+        'months_json': json.dumps(months),
+        'current_year': current_year,
     }
     return render(request, 'dashboard.html', context)
 
