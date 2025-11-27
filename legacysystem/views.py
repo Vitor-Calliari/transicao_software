@@ -685,3 +685,36 @@ def change_password(request):
         return JsonResponse({'success': 'Senha alterada com sucesso'})
     
     return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+from datetime import datetime
+
+@login_required
+def exportar_vendas_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="vendas_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"'
+
+    writer = csv.writer(response, delimiter=';')
+    
+    # CABEÇALHO (ajusta conforme seus campos de venda)
+    writer.writerow([
+        'ID', 'Cliente', 'Funcionário', 'Data', 'Valor Total', 
+        'Forma de Pagamento', 'Status', 'Itens'
+    ])
+
+    # DADOS — ajusta conforme seu model de Venda
+    vendas = Venda.objects.select_related('cliente').all()
+    for venda in vendas:
+        itens = ", ".join([f"{item.produto.descricao} (R${item.valor_unitario}) x{item.quantidade}" 
+         for item in venda.itens.all()])
+        writer.writerow([
+            venda.id,
+            venda.cliente.nome if venda.cliente else "Sem cliente",
+            "Sem funcionario",
+            venda.data_venda.strftime("%d/%m/%Y %H:%M"),
+            f"R$ {venda.valor_total:.2f}",
+            venda.get_forma_pagamento_display(),
+            venda.get_status_display(),
+            itens
+        ])
+
+    return response
