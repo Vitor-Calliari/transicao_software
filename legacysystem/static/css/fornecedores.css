@@ -337,7 +337,7 @@ main {
     }
 }
 
-#paginacao { text-align:center; margin-top:20px; }
+#paginationControls { text-align:center; margin-top:20px; }
 .pagina-btn {
   min-width:45px; height:45px; display:inline-flex; align-items:center; justify-content:center;
   background: transparent; border: .3px solid rgba(222, 56, 60, 0.37);

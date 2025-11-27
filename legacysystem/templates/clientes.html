@@ -23,7 +23,7 @@
     
     <div class="toolbar-left">
         <div class="search-container">
-            <input type="text" placeholder="Pesquisar" class="search-input">
+            <input type="text" placeholder="Pesquisar" class="search-input" id="searchCliente">
             <img src="{% static 'icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
         </div>
 
@@ -46,8 +46,9 @@
     </div>
             <div class="clientes-lista"> <div class="info-card">
                 </div>
+                <div id="paginationControls" class="pagination"></div>
             </div>
-
+            
         </main>
 
     </div> <!-- fecha container-dashboard -->

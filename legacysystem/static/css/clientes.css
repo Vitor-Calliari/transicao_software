@@ -382,3 +382,16 @@ main {
     background: rgba(255, 255, 255, 0.1); /* Fundo clarinho ao passar mouse */
     color: #fff; /* Ícone fica branco */
 }
+
+#paginationControls { text-align:center; margin-top:20px; }
+.pagina-btn {
+  min-width:45px; height:45px; display:inline-flex; align-items:center; justify-content:center;
+  background: transparent; border: .3px solid rgba(222, 56, 60, 0.37);
+  color: white; padding: 5px 15px; border-radius: 12px; transition: all .3s;
+  backdrop-filter: blur(40px); filter: drop-shadow(0 2px 10px rgba(0,0,0,.3));
+  font-family:'Poppins',sans-serif; font-weight:300; cursor:pointer;
+  margin-left: 10px !important; 
+}
+.pagina-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); transform: translateY(-2px); }
+.pagina-btn.ativa { background: rgba(222,56,60,0.25); border-color: rgba(222,56,60,0.6); font-weight:400; transform: scale(1.05); }
+.pagina-btn.disabled { opacity: 0.4; cursor:not-allowed; border-color: rgba(222,56,60,0.2); filter: none; }

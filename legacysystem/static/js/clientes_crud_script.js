@@ -22,6 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalOverlay = document.querySelector("#modalOverlay");
     const fecharModalCancelar = document.querySelector("#fecharModalCancelar");
 
+    let clientes = [];
+    let paginaAtual = 1;
+    const itensPorPagina = 10;
+
+    const paginationControls = document.getElementById("paginationControls");
+
     const salvarButton = document.querySelector("#salvarCliente");
     const excluirButton = document.querySelector("#excluirCliente");
     const listaClientes = document.querySelector(".info-card");
@@ -51,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (csrf) headers['X-CSRFToken'] = csrf;
         options.headers = headers;
         return fetch(url, options).then(resp => {
-            if (!resp.ok) return resp.json().then(err => Promise.reject({status: resp.status, body: err}));
+            if (!resp.ok) return resp.json().then(err => Promise.reject({ status: resp.status, body: err }));
             return resp.json();
         });
     }
@@ -61,15 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(API_BASE)
             .then(res => res.json())
             .then(data => {
-                listaClientes.innerHTML = '';
-                data.clientes.forEach(c => {
-                    adicionarClienteNaListaDOM(c);
-                });
+                clientes = data.clientes;
+                exibirPagina(1);  // inicia paginação
             })
             .catch(err => {
                 console.error('Erro ao carregar clientes', err);
             });
     }
+
 
     function adicionarClienteNaListaDOM(dadosCliente) {
         const item = document.createElement("div");
@@ -137,6 +142,45 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Erro ao criar cliente");
         });
     }
+
+    // ==============================
+    // PAGINAÇÃO
+    // ==============================
+
+    function exibirPagina(pagina) {
+        paginaAtual = pagina;
+
+        listaClientes.innerHTML = "";
+
+        const inicio = (pagina - 1) * itensPorPagina;
+        const fim = inicio + itensPorPagina;
+
+        const itensPagina = clientes.slice(inicio, fim);
+
+        itensPagina.forEach(c => adicionarClienteNaListaDOM(c));
+
+        criarBotoesPaginacao();
+    }
+
+
+    function criarBotoesPaginacao() {
+        paginationControls.innerHTML = "";
+
+        const totalPaginas = Math.ceil(clientes.length / itensPorPagina);
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+
+            btn.classList.add("pagina-btn");
+            if (i === paginaAtual) btn.classList.add("ativa");
+
+            btn.addEventListener("click", () => exibirPagina(i));
+
+            paginationControls.appendChild(btn);
+        }
+    }
+
 
     function abrirEdicao(id) {
         modoEdicao = true;
@@ -239,16 +283,49 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarClientes();
 
 
-if (btnPrint) {
-    btnPrint.addEventListener('click', function() {
-        const exportUrl = this.getAttribute('data-export-url');
+    if (btnPrint) {
+        btnPrint.addEventListener('click', function () {
+            const exportUrl = this.getAttribute('data-export-url');
 
-        if (exportUrl) {
-            window.location.href = "/exportar_clientes_csv/";
-        } else {
-            console.error("URL de exportação não encontrada no botão.");
+            if (exportUrl) {
+                window.location.href = "/exportar_clientes_csv/";
+            } else {
+                console.error("URL de exportação não encontrada no botão.");
+            }
+        });
+    }
+
+    document.getElementById("searchCliente").addEventListener("input", function () {
+        const termo = this.value.trim().toLowerCase();
+
+        if (termo === "") {
+            listaClientes.innerHTML = "";
+            clientes.forEach(c => adicionarClienteNaListaDOM(c));
+            return;
         }
+
+        const filtrados = clientes.filter(c =>
+            (c.nome ?? "").toLowerCase().includes(termo) ||
+            (String(c.cod) ?? "").includes(termo) ||
+            (c.cpf ?? "").toLowerCase().includes(termo)
+        );
+
+        exibirResultadosBusca(filtrados);
     });
-}
+
+
+    function exibirResultadosBusca(lista) {
+        listaClientes.innerHTML = "";
+
+        if (lista.length === 0) {
+            listaClientes.innerHTML =
+                "<p style='color:white; text-align:center;'>Nenhum cliente encontrado.</p>";
+        } else {
+            lista.forEach(c => adicionarClienteNaListaDOM(c));
+        }
+
+        paginationControls.innerHTML = ""; // remove paginação durante busca
+    }
+
 
 }); 

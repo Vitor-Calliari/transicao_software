@@ -20,7 +20,7 @@
 
             <div class="top-bar">
                 <div class="search-container">
-                    <input type="text" placeholder="Pesquisar" class="search-input">
+                    <input type="text" placeholder="Pesquisar" class="search-input" id="searchProduto"> 
                     <img src="{% static '/icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
                 </div>
 
@@ -42,9 +42,10 @@
                         <!-- linhas geradas via JS -->
                     </tbody>
                 </table>
+                <div id="paginationControls" class="pagination"></div>
             </div>
 
-            <div id="paginationControls" class="pagination"></div>
+            
 
         </main>
 

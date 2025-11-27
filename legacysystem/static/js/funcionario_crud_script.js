@@ -35,6 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let modoEdicao = false;
   let funcionarioEditandoID = null;
 
+  let funcionarios = [];
+  let funcionariosFiltrados = [];
+
+  let paginaAtual = 1;
+  const itensPorPagina = 10;
+
+  const listaFuncionarios = document.querySelector(".info-card");
+  const paginationControls = document.getElementById("paginationControls");
+
+
   // CSRF + fetch
   function getCsrfToken() {
     const m = document.querySelector('meta[name="csrf-token"]');
@@ -48,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (csrf) headers['X-CSRFToken'] = csrf;
     options.headers = headers;
     return fetch(url, options).then(resp => {
-      if (!resp.ok) return resp.json().then(err => Promise.reject({status: resp.status, body: err}));
+      if (!resp.ok) return resp.json().then(err => Promise.reject({ status: resp.status, body: err }));
       return resp.json();
     });
   }
@@ -58,13 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const data = await fetchJson(API_LIST);
       listaEl.innerHTML = "";
-      const list = data.funcionarios || [];
-      list.forEach(f => adicionarFuncionarioNaLista(f));
+
+      funcionarios = data.funcionarios || [];
+      funcionariosFiltrados = [...funcionarios];
+
+      exibirPagina(1);
+
     } catch (err) {
       console.error("Erro ao carregar funcionários:", err);
       listaEl.innerHTML = "<p>Erro ao carregar funcionários.</p>";
     }
   }
+
 
   // Criar card (sem celular na exibição)
   function criarCard(func) {
@@ -103,10 +118,49 @@ document.addEventListener("DOMContentLoaded", () => {
     listaEl.appendChild(card);  // Append para ordem crescente
   }
 
+ // ==============================
+// PAGINAÇÃO CORRIGIDA
+// ==============================
+
+function exibirPagina(pagina) {
+    listaEl.innerHTML = "";
+    paginaAtual = pagina;
+
+    const inicio = (pagina - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+
+    const itensPagina = funcionariosFiltrados.slice(inicio, fim);
+
+    itensPagina.forEach(f => adicionarFuncionarioNaLista(f));
+
+    criarBotoesPaginacao();
+}
+
+function criarBotoesPaginacao() {
+    const totalPaginas = Math.ceil(funcionariosFiltrados.length / itensPorPagina);
+
+    paginationControls.innerHTML = "";
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        btn.classList.add("pagina-btn");
+
+        if (i === paginaAtual) {
+            btn.classList.add("ativa");
+        }
+
+        btn.addEventListener("click", () => exibirPagina(i));
+
+        paginationControls.appendChild(btn);
+    }
+}
+
+
   // Modal e formulário
   function abrirModal() { if (modal) modal.style.display = "flex"; }
-  function fecharModal() { 
-    if (modal) modal.style.display = "none"; 
+  function fecharModal() {
+    if (modal) modal.style.display = "none";
     modoEdicao = false;
     funcionarioEditandoID = null;
     limparFormulario();
@@ -270,6 +324,53 @@ document.addEventListener("DOMContentLoaded", () => {
   btnExcluir.addEventListener("click", excluirFuncionario);
   btnCancelar.addEventListener("click", fecharModal);
 
+  const searchInput = document.querySelector(".search-input");
+  const searchIcon = document.querySelector(".search-icon");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      filtrarFuncionarios(searchInput.value);
+    });
+  }
+
+  if (searchIcon) {
+    searchIcon.addEventListener("click", () => {
+      filtrarFuncionarios(searchInput.value);
+    });
+  }
+
+
   carregarFuncionarios();
+
+  function filtrarFuncionarios(termo) {
+    const q = termo.trim().toLowerCase();
+
+    // Se vazio, lista original
+    if (q === "") {
+      funcionariosFiltrados = [...funcionarios];
+    } else {
+      funcionariosFiltrados = funcionarios.filter(func => {
+
+        const nome = (func.nome ?? "").toLowerCase();
+        const cod = String(func.cod ?? "").toLowerCase();
+
+        // 🔹 Regra 1: começa com o termo
+        if (nome.startsWith(q)) return true;
+
+        // 🔹 Regra 2: alguma palavra começa com o termo
+        const partes = nome.split(" ");
+        if (partes.some(p => p.startsWith(q))) return true;
+
+        // 🔹 Regra 3: código começa com termo
+        if (cod.startsWith(q)) return true;
+
+        return false;
+      });
+    }
+
+    // Atualizar DOM
+    listaEl.innerHTML = "";
+    exibirPagina(1);
+  }
 
 });
