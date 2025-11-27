@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'legacysystem',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models import Max
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 NIVEL_ACESSO_CHOICES = [
     ('administrador', 'Administrador'),
@@ -52,6 +55,7 @@ class Funcionario(models.Model):
     cpf = models.CharField(max_length=20, blank=True, null=True)
     senha = models.CharField(max_length=128, blank=True, null=True)  # vai ser criptografada
     cargo = models.CharField(max_length=100, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nivel_acesso = models.CharField(
         max_length=20,
         choices=NIVEL_ACESSO_CHOICES,
@@ -170,3 +174,24 @@ class ItemVenda(models.Model):
 
     def __str__(self):
         return f"{self.produto.descricao} - Qtd: {self.quantidade}"
+    
+
+
+
+@receiver(post_save, sender=Funcionario)
+def criar_usuario_para_funcionario(sender, instance, created, **kwargs):
+    if created and instance.user is None and instance.email:
+        email = instance.email.strip().lower()  # usa o gmail do funcionário
+        username = email                        # username = email
+        nome = instance.nome
+
+        # Cria o usuário do Django vinculado ao funcionário
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password="123456",  # senha provisória
+            first_name=nome
+        )
+
+        instance.user = user
+        instance.save()

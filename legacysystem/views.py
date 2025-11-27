@@ -8,6 +8,8 @@ from django.db.models import Sum, F
 from django.utils import timezone
 from django.http import HttpResponse
 import csv 
+from .models import Cliente, Produto, Venda, Funcionario, Fornecedor
+
 
 
 # -----------------------------
