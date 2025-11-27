@@ -1,6 +1,11 @@
 from django.db import models
 from django.db.models import Max
 
+NIVEL_ACESSO_CHOICES = [
+    ('administrador', 'Administrador'),
+    ('funcionario', 'Funcionário'),
+]
+
 class Cliente(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(blank=True, null=True)
@@ -28,8 +33,8 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f"{self.nome} #{self.cod}"
-
-
+    
+    
 class Funcionario(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(blank=True, null=True)
@@ -45,6 +50,14 @@ class Funcionario(models.Model):
     complemento = models.CharField(max_length=100, blank=True, null=True)
     rg = models.CharField(max_length=30, blank=True, null=True)
     cpf = models.CharField(max_length=20, blank=True, null=True)
+    senha = models.CharField(max_length=128, blank=True, null=True)  # vai ser criptografada
+    cargo = models.CharField(max_length=100, blank=True, null=True)
+    nivel_acesso = models.CharField(
+        max_length=20,
+        choices=NIVEL_ACESSO_CHOICES,
+        blank=True,
+        null=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

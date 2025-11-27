@@ -78,4 +78,4 @@ class VendaForm(forms.ModelForm):
 class ItemVendaForm(forms.ModelForm):
     class Meta:
         model = ItemVenda
-        fields = ['produto', 'quantidade', 'valor_unitario']        
+        fields = ['produto', 'quantidade', 'valor_unitario']

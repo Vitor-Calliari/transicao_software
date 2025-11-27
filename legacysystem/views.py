@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.db.models import Sum, F
 from django.utils import timezone
 from django.http import HttpResponse
@@ -296,6 +297,10 @@ def funcionarios_list(request):
 def funcionario_create(request):
     data = json.loads(request.body.decode("utf-8"))
     form = FuncionarioForm(data)
+
+    if "senha" in data and data["senha"].strip():
+        data["senha"] = make_password(data["senha"])
+
     if form.is_valid():
         func = form.save()
         return JsonResponse({"funcionario": funcionario_to_dict(func)}, status=201)
@@ -311,6 +316,9 @@ def funcionario_update(request, pk):
         return JsonResponse({"error": "Funcionario not found"}, status=404)
 
     data = json.loads(request.body.decode("utf-8"))
+    if "senha" in data and data["senha"].strip():
+        data["senha"] = make_password(data["senha"])
+
     form = FuncionarioForm(data, instance=func)
 
     if form.is_valid():
