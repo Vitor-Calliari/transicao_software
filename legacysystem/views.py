@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum, F
 from django.utils import timezone
 from django.http import HttpResponse
+from .decorators import admin_required
 import csv 
 
 from .models import Cliente, Produto, Venda, Funcionario, Fornecedor
@@ -181,9 +182,11 @@ def clientes_view(request):
 def fornecedores_view(request):
     return render(request, 'fornecedores.html')
 
-@login_required(login_url='login')
+
+@admin_required(redirect_to_dashboard=True, use_403=False)
 def funcionarios_view(request):
     return render(request, 'funcionarios.html')
+
 
 @login_required(login_url='login')
 def produtos_view(request):

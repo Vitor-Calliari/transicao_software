@@ -11,43 +11,43 @@
     <link rel="stylesheet" href="{% static '/css/vendas.css' %}">
 </head>
 <body>
-       {% include 'background.html' %}
-    
+    {% include 'background.html' %}
+
     <div class="container-dashboard">
         {% include 'sidebar.html' %}  
-        <main>
-            <main class="vendas-main">
-                <h1>Vendas</h1>
 
-                <div class="top-bar">
-                    <div class="search-container">
-                        <input type="text" placeholder="Pesquisar" class="search-input">
-                        <img src="{% static '/icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
-                    </div>
+        <!-- Main content corrigido -->
+        <main class="vendas-main">
+            <h1>Vendas</h1>
 
-                    <button type="button" class="addbotaovenda">Adicionar Venda</button>
+            <div class="top-bar">
+                <div class="search-container">
+                    <input type="text" placeholder="Pesquisar" class="search-input">
+                    <img src="{% static '/icons/lupa_icon.svg' %}" alt="Buscar" class="search-icon">
                 </div>
 
-                <div class="vendas-lista">
-                    <table class="vendas-table">
-                        <thead>
-                            <tr>
-                                <th>N° da Venda</th>
-                                <th>Cliente</th>
-                                <th>Data</th>
-                                <th>Valor Total</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vendasTbody">
-                            <!-- linhas geradas via JS -->
-                        </tbody>
-                    </table>
-                </div>
+                <button type="button" class="addbotaovenda">Adicionar Venda</button>
+            </div>
 
-                <div id="paginationControls" class="pagination"></div>
-            </main>
+            <div class="vendas-lista">
+                <table class="vendas-table">
+                    <thead>
+                        <tr>
+                            <th>N° da Venda</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Valor Total</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vendasTbody">
+                        <!-- linhas geradas via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="paginationControls" class="pagination"></div>
         </main>
 
         <!-- Modal: Nova Venda -->
@@ -70,9 +70,7 @@
                         </div>
 
                         <!-- Dropdown de clientes -->
-                        <div id="clientesDropdown" class="clientes-dropdown" style="display: none;">
-                            <!-- Lista de clientes será preenchida dinamicamente -->
-                        </div>
+                        <div id="clientesDropdown" class="clientes-dropdown" style="display: none;"></div>
 
                         <div class="cliente-info" id="clienteInfoDisplay" style="display: none;">
                             <div class="cliente-text">
@@ -87,21 +85,13 @@
                     <div class="itens-block">
                         <div class="itens-title">Itens</div>
                         
-                        <!-- Container para produtos adicionados -->
-                        <div id="produtosAdicionados" class="produtos-adicionados-container">
-                            <!-- Produtos adicionados aparecerão aqui -->
-                        </div>
+                        <div id="produtosAdicionados" class="produtos-adicionados-container"></div>
 
-                        <!-- Formulário para adicionar novo produto -->
                         <div class="itens-row" id="novoProdutoForm">
                             <div class="field prod-field">
                                 <label for="vendaProdutoSearch">Produto</label>
                                 <input id="vendaProdutoSearch" type="text" placeholder="Buscar produto" class="search-input" autocomplete="off">
-                                
-                                <!-- Dropdown de produtos -->
-                                <div id="produtosDropdown" class="produtos-dropdown" style="display: none;">
-                                    <!-- Lista de produtos será preenchida dinamicamente -->
-                                </div>
+                                <div id="produtosDropdown" class="produtos-dropdown" style="display: none;"></div>
                             </div>
                             <div class="field qtd-field">
                                 <label for="vendaItemQtd">Quantidade</label>
@@ -116,7 +106,6 @@
                     </div>
                 </div>
 
-                <!-- visual separator -->
                 <div class="col-separator" aria-hidden="true"></div>
 
                 <!-- Right column: Pagamento + Totais -->
@@ -149,7 +138,6 @@
                     </div>
                 </div>
 
-                <!-- Footer actions full-width -->
                 <div class="modal-actions">
                     <button id="salvarVenda" class="btn-save" type="button">Salvar</button>
                     <button id="fecharModalVendaCancelar" class="btn-cancel" type="button">Cancelar</button>
@@ -158,7 +146,6 @@
                 <input type="hidden" id="vendaID">
             </div>
         </div>
-
     </div> <!-- /container-dashboard -->
 
     <script src="{% static '/js/script.js' %}"></script>

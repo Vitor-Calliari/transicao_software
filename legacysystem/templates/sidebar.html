@@ -18,9 +18,15 @@
                 <a href="{% url 'produtos' %}" class="item-nav {% if request.resolver_match.url_name == 'produtos' %}ativo{% endif %}" title="Produtos">
                     <img src="{% static '/icons/produtos_icon_inativo.svg' %}" alt="Produtos">
                 </a>
-                <a href="{% url 'funcionarios' %}" class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" title="Funcionários">
-                 <img src="{% static '/icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
+                {% if user.is_superuser or user.is_staff or user.funcionario and user.funcionario.nivel_acesso == "administrador" %}
+                <a href="{% url 'funcionarios' %}" 
+                class="item-nav {% if request.resolver_match.url_name == 'funcionarios' %}ativo{% endif %}" 
+                title="Funcionários">
+                <img src="{% static '/icons/funcionarios_icon_inativo.svg' %}" alt="Funcionários">
                 </a>
+                {% endif %}
+
+
 
                 <a href="{% url 'vendas' %}" class="item-nav {% if request.resolver_match.url_name == 'vendas' %}ativo{% endif %}" title="Vendas">
                     <img src="{% static '/icons/vendas_icon_inativo.svg' %}" alt="Vendas">
