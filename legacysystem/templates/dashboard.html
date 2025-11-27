@@ -25,27 +25,27 @@
                     <div class="cartao-info">
                         <div class="cartao">
                             <span class="rotulo-stat">Clientes ativos:</span>
-                            <span class="valor-stat">154</span>
+                            <span class="valor-stat">{{ clientes_count }}</span>
                         </div>
                         <div class="cartao">
                             <span class="rotulo-stat">Produtos em estoque:</span>
-                            <span class="valor-stat">342</span>
+                            <span class="valor-stat">{{ produtos_estoque_total }}</span>
                         </div>
                         <div class="cartao">
                             <span class="rotulo-stat">Vendas do mês:</span>
-                            <span class="valor-stat">R$ 18.230,00</span>
+                            <span class="valor-stat">{{ vendas_mes_formatado }}</span>
                         </div>
                         <div class="cartao">
                             <span class="rotulo-stat">Fornecedores ativos:</span>
-                            <span class="valor-stat">12</span>
+                            <span class="valor-stat">{{ fornecedores_count }}</span>
                         </div>
                         <div class="cartao">
                             <span class="rotulo-stat">Funcionários ativos:</span>
-                            <span class="valor-stat">8</span>
+                            <span class="valor-stat">{{ funcionarios_count }}</span>
                         </div>
                         <div class="cartao alerta">
                             <span class="rotulo-stat">Produtos com estoque baixo:</span>
-                            <span class="valor-stat">5</span>
+                            <span class="valor-stat">{{ produtos_estoque_baixo }}</span>
                         </div>
                     </div>
                     
@@ -55,41 +55,15 @@
                         <h2 class="titulo-secao-registros">Últimos Registros</h2>
                         <div class="divisoria-registros"></div>
                         <div class="lista-registros">
+                            {% for registro in ultimos_registros %}
                             <div class="item-registro">
                                 <div class="info-registro">
-                                    <span class="titulo-registro">Cliente adicionado:</span>
-                                    <span class="id-registro">ID: 340560</span>
+                                    <span class="titulo-registro">{{ registro.acao }}:</span>
+                                    <span class="id-registro">ID: {{ registro.id }}</span>
                                 </div>
-                                <span class="hora-registro">15:40</span>
+                                <span class="hora-registro">{{ registro.hora }}</span>
                             </div>
-                            <div class="item-registro">
-                                <div class="info-registro">
-                                    <span class="titulo-registro">Cliente alterado:</span>
-                                    <span class="id-registro">ID: 903485</span>
-                                </div>
-                                <span class="hora-registro">14:26</span>
-                            </div>
-                            <div class="item-registro">
-                                <div class="info-registro">
-                                    <span class="titulo-registro">Produto adicionado:</span>
-                                    <span class="id-registro">ID: 657289</span>
-                                </div>
-                                <span class="hora-registro">14:10</span>
-                            </div>
-                            <div class="item-registro">
-                                <div class="info-registro">
-                                    <span class="titulo-registro">Reposição de produto:</span>
-                                    <span class="id-registro">ID: 240198</span>
-                                </div>
-                                <span class="hora-registro">13:35</span>
-                            </div>
-                            <div class="item-registro">
-                                <div class="info-registro">
-                                    <span class="titulo-registro">Produto adicionado:</span>
-                                    <span class="id-registro">ID: 240198</span>
-                                </div>
-                                <span class="hora-registro">09:48</span>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -98,28 +72,29 @@
                     <div class="cartoes-relatorio">
 
                         <!-- relatorio de clientes -->
-                        <div class="cartao-relatorio verde">
+                        <div class="cartao-relatorio {{ clientes_status }}">
                             <div class="cabecalho-relatorio">
                                 <h2 class="titulo-relatorio">Relatório de clientes</h2>
-                                <span class="subtitulo-relatorio">48 novos clientes</span>
+                                <span class="subtitulo-relatorio {{ clientes_status }}">{{ novos_clientes_mes }} novos clientes</span>
                             </div>
-                            <div class="numero-relatorio-positivo">
-                                350
-                                <svg class="icone-seta cima" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="2" stroke-linecap="round"/>
+                            <div class="numero-relatorio-{% if clientes_status == 'verde' %}positivo{% else %}negativo{% endif %}">
+                                {{ clientes_count }}
+                                <svg class="icone-seta {{ clientes_seta }}" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="{% if clientes_seta == 'cima' %}M7 17L17 7M17 7H7M17 7V17{% else %}M7 7L17 17M17 17H7M17 17V7{% endif %}" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                             </div>
                         </div>
                         
                         <!-- relatorio de vendar -->
-                        <div class="cartao-relatorio vermelho">
+                        <div class="cartao-relatorio {{ vendas_status }}">
                             <div class="cabecalho-relatorio">
                                 <h2 class="titulo-relatorio">Relatório de vendas:</h2>
+                                <span class="subtitulo-relatorio {{ vendas_status }}">{{ vendas_mes_formatado }} em vendas</span>
                             </div>
-                            <div class="numero-relatorio-negativo">
-                                500
-                                <svg class="icone-seta baixo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M7 7L17 17M17 17H7M17 17V7" stroke-width="2" stroke-linecap="round"/>
+                            <div class="numero-relatorio-{% if vendas_status == 'verde' %}positivo{% else %}negativo{% endif %}">
+                                {{ vendas_total_count }}
+                                <svg class="icone-seta {{ vendas_seta }}" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="{% if vendas_seta == 'cima' %}M7 17L17 7M17 7H7M17 7V17{% else %}M7 7L17 17M17 17H7M17 17V7{% endif %}" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                             </div>
                         </div>

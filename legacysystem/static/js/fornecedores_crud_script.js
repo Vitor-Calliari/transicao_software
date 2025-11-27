@@ -195,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fornecedorEditandoID = null;
         limparInputs();
         campos.cod.value = gerarCodAutomatico();
+        campos.cod.readOnly = true;
         modalOverlay.style.display = "flex";
     });
 
@@ -205,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const dados = fornecedores.find(f => f.id === id);
 
         for (let campo in campos) campos[campo].value = dados[campo] ?? "";
+        campos.cod.readOnly = true;
 
         modalOverlay.style.display = "flex";
     }

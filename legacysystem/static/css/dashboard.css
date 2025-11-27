@@ -362,6 +362,14 @@ main {
     margin-bottom: 5px;
 }
 
+.subtitulo-relatorio.verde {
+    color: rgba(39, 200, 64, 1);
+}
+
+.subtitulo-relatorio.vermelho {
+    color: rgba(189, 0, 3, 1);
+}
+
 .titulo-relatorio {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;

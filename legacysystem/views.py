@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.models import User
-import csv
+from django.db.models import Sum, F
+from django.utils import timezone
 from django.http import HttpResponse
-from .models import Cliente 
+import csv 
 
 
 # -----------------------------
@@ -41,7 +42,107 @@ def logout_view(request):
 
 @login_required(login_url='login')
 def dashboard_view(request):
-    return render(request, 'dashboard.html')
+    clientes_count = Cliente.objects.count()
+    produtos_estoque_total = Produto.objects.aggregate(total=Sum('estoque'))['total'] or 0
+    
+    now = timezone.now()
+    current_year = now.year
+    current_month = now.month
+    
+    # Mês anterior
+    last_month = current_month - 1
+    last_year = current_year
+    if last_month == 0:
+        last_month = 12
+        last_year -= 1
+    
+    vendas_mes = Venda.objects.filter(
+        data_venda__year=current_year,
+        data_venda__month=current_month
+    ).aggregate(total=Sum('valor_final'))['total'] or 0
+    vendas_mes_formatado = f"R$ {vendas_mes:,.2f}".replace('.', ',').replace(',', '.', 1).replace(',', ',')
+    
+    fornecedores_count = Fornecedor.objects.count()
+    funcionarios_count = Funcionario.objects.count()
+    produtos_estoque_baixo = Produto.objects.filter(estoque__lt=10).count()
+    
+    # Novos clientes no mês atual
+    novos_clientes_mes = Cliente.objects.filter(
+        created_at__year=current_year,
+        created_at__month=current_month
+    ).count()
+    
+    # Novos clientes no mês anterior
+    novos_clientes_last_month = Cliente.objects.filter(
+        created_at__year=last_year,
+        created_at__month=last_month
+    ).count()
+    
+    # Status clientes
+    clientes_status = 'verde' if novos_clientes_mes > novos_clientes_last_month else 'vermelho'
+    clientes_seta = 'cima' if novos_clientes_mes > novos_clientes_last_month else 'baixo'
+    
+    # Vendas no mês anterior
+    vendas_last_month = Venda.objects.filter(
+        data_venda__year=last_year,
+        data_venda__month=last_month
+    ).aggregate(total=Sum('valor_final'))['total'] or 0
+    
+    # Status vendas
+    vendas_status = 'verde' if vendas_mes > vendas_last_month else 'vermelho'
+    vendas_seta = 'cima' if vendas_mes > vendas_last_month else 'baixo'
+    
+    vendas_total_count = Venda.objects.count()
+    
+    # Últimos registros
+    eventos = []
+    modelos = [
+        (Cliente, 'Cliente'),
+        (Funcionario, 'Funcionário'),
+        (Fornecedor, 'Fornecedor'),
+        (Produto, 'Produto'),
+        (Venda, 'Venda'),
+    ]
+    
+    for model, name in modelos:
+        # Adicionados
+        for obj in model.objects.order_by('-created_at')[:10]:
+            acao = f'{name} adicionado' if name != 'Venda' else 'Venda realizada'
+            eventos.append({
+                'acao': acao,
+                'id': getattr(obj, 'cod', obj.id),
+                'hora': obj.created_at.strftime('%H:%M'),
+                'data': obj.created_at
+            })
+        # Alterados
+        for obj in model.objects.filter(updated_at__gt=F('created_at')).order_by('-updated_at')[:10]:
+            acao = f'{name} ajustado'
+            eventos.append({
+                'acao': acao,
+                'id': getattr(obj, 'cod', obj.id),
+                'hora': obj.updated_at.strftime('%H:%M'),
+                'data': obj.updated_at
+            })
+    
+    eventos.sort(key=lambda x: x['data'], reverse=True)
+    ultimos_registros = eventos[:5]
+    
+    context = {
+        'clientes_count': clientes_count,
+        'produtos_estoque_total': produtos_estoque_total,
+        'vendas_mes_formatado': vendas_mes_formatado,
+        'fornecedores_count': fornecedores_count,
+        'funcionarios_count': funcionarios_count,
+        'produtos_estoque_baixo': produtos_estoque_baixo,
+        'novos_clientes_mes': novos_clientes_mes,
+        'clientes_status': clientes_status,
+        'clientes_seta': clientes_seta,
+        'vendas_total_count': vendas_total_count,
+        'vendas_status': vendas_status,
+        'vendas_seta': vendas_seta,
+        'ultimos_registros': ultimos_registros,
+    }
+    return render(request, 'dashboard.html', context)
 
 @login_required(login_url='login')
 def perfil_view(request):

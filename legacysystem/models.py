@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 
 NIVEL_ACESSO_CHOICES = [
     ('administrador', 'Administrador'),
@@ -10,7 +11,7 @@ class Cliente(models.Model):
     email = models.EmailField(blank=True, null=True)
     celular = models.CharField(max_length=20, blank=True, null=True)
     fixo = models.CharField(max_length=20, blank=True, null=True)
-    cod = models.PositiveIntegerField(unique=True)
+    cod = models.PositiveIntegerField(unique=True, blank=True)
     endereco = models.CharField(max_length=255, blank=True, null=True)
     cep = models.CharField(max_length=20, blank=True, null=True)
     numero = models.CharField(max_length=20, blank=True, null=True)
@@ -24,6 +25,12 @@ class Cliente(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.cod:
+            max_cod = Cliente.objects.aggregate(Max('cod'))['cod__max'] or 0
+            self.cod = max_cod + 1
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nome} #{self.cod}"
     
@@ -33,7 +40,7 @@ class Funcionario(models.Model):
     email = models.EmailField(blank=True, null=True)
     celular = models.CharField(max_length=20, blank=True, null=True)
     fixo = models.CharField(max_length=20, blank=True, null=True)
-    cod = models.PositiveIntegerField(unique=True)
+    cod = models.PositiveIntegerField(unique=True, blank=True)
     endereco = models.CharField(max_length=255, blank=True, null=True)
     cep = models.CharField(max_length=20, blank=True, null=True)
     numero = models.CharField(max_length=20, blank=True, null=True)
@@ -55,6 +62,12 @@ class Funcionario(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.cod:
+            max_cod = Funcionario.objects.aggregate(Max('cod'))['cod__max'] or 0
+            self.cod = max_cod + 1
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nome} #{self.cod}"
     
@@ -63,7 +76,7 @@ class Fornecedor(models.Model):
     email = models.EmailField(blank=True, null=True)
     celular = models.CharField(max_length=20, blank=True, null=True)
     fixo = models.CharField(max_length=20, blank=True, null=True)
-    cod = models.PositiveIntegerField(unique=True)
+    cod = models.PositiveIntegerField(unique=True, blank=True)
     endereco = models.CharField(max_length=255, blank=True, null=True)
     cep = models.CharField(max_length=20, blank=True, null=True)
     numero = models.CharField(max_length=20, blank=True, null=True)
@@ -76,18 +89,30 @@ class Fornecedor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.cod:
+            max_cod = Fornecedor.objects.aggregate(Max('cod'))['cod__max'] or 0
+            self.cod = max_cod + 1
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nome} #{self.cod}"
 
 
 class Produto(models.Model):
     descricao = models.CharField(max_length=255)
-    cod = models.CharField(max_length=50, unique=True)
+    cod = models.PositiveIntegerField(unique=True, blank=True)
     valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
     estoque = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.cod:
+            max_cod = Produto.objects.aggregate(Max('cod'))['cod__max'] or 0
+            self.cod = max_cod + 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.descricao} (#{self.cod})"
